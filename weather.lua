@@ -1,6 +1,6 @@
 #!/usr/bin/lua
 
--- Time-stamp: <2012-12-29 13:44:35 ryan>
+-- Time-stamp: <2013-01-21 14:54:00 ryan>
 -- It's simple but usefule weather widget under awesome wm.
 -- Usage:
 --     1. weather = require("weather")
@@ -51,7 +51,7 @@ local function read_json (path)
 end
 
 local function notify_weather ()
-  obj = read_json("/home/ryan/.data/weather.json")
+  obj = read_json("/home/ryan/data/weather.json")
   if nil == obj then return end
   info = obj.weatherinfo
 
@@ -64,7 +64,7 @@ local function notify_weather ()
   end
 
 local function update (w)
-   obj = read_json("/home/ryan/.data/weather.json")
+   obj = read_json("/home/ryan/data/weather.json")
    if nil == obj then return end
    weatherinfo = obj.weatherinfo
 
@@ -75,7 +75,7 @@ local function update (w)
    if index == '99' then
       index = 0
    end
-   local p_image = "/home/ryan/.data/weather.gif/c" .. index .. ".gif"
+   local p_image = "/home/ryan/data/weather.gif/c" .. index .. ".gif"
 
    w.city:set_markup(p_city)
    w.icon:set_image(p_image)
@@ -100,7 +100,7 @@ local function new()
 
    w.city:set_markup("ok")
    w.temp:set_markup("temp")
-   w.icon:set_image("/home/ryan/.data/weather.gif/c1.gif")
+   w.icon:set_image("/home/ryan/data/weather.gif/c1.gif")
    update(w)
 
    weather_timer = timer({ timeout = 10 })

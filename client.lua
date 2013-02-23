@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2012-12-29 16:18:37 ryan>
+-- Time-stamp: <2013-01-27 19:21:43 ryan>
 
 local awful = require("awful")
 local rules = require("awful.rules")
@@ -65,10 +65,12 @@ rules.rules = {
    { rule = { class = "AliWangWang" },
      properties = { tag = tags[1][4] }},
    { rule = { class = "AliWangWang",
-              name = "(Form)|(的资料)" },
+              name = "ScreenCapturePainter" },
      properties = { floating = true }},
    { rule = { name = o.mpc_client },
      properties = { tag = tags[1][10] }},
+   -- { rule = { name = "lyricshow" },
+   --   properties = { opacity = 0 }},
    -- for chromium popups
    { rule = { instance = "exe" },
      properties = { floating = true } },
@@ -114,7 +116,7 @@ client.connect_signal("manage",
 
 client.connect_signal("focus",
                       function(c)
-                         if string.match(c.class, "URxvt")
+                         if c.class and string.match(c.class, "URxvt")
                          then
                             c.border_color = theme.border_high_focus
                          else

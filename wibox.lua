@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2012-12-29 13:00:44 ryan>
+-- Time-stamp: <2013-01-21 19:25:06 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -15,8 +15,6 @@ local theme = require("meelua.theme")
 local weather = require("meelua.weather")
 local equal = require("meelua.equal")
 local o = require("meelua.conf")
-
-print(theme.font)
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -101,7 +99,14 @@ _volume = wibox.widget.textbox()
 _volume:set_font(theme.font)
 myvolume = wibox.layout.margin(_volume, 4, 4)
 myvolume_v = vicious.register(_volume,
-                            vicious.widgets.volume, "$1 $2", 10, "Master")
+                              vicious.widgets.volume, "$1 $2", 10, "Master")
+
+_mdir = wibox.widget.textbox()
+_mdir:set_font(theme.font)
+mymdir = wibox.layout.margin(_mdir, 4, 4)
+vicious.register(_mdir,
+                 vicious.widgets.mdir, "Mail: <span color=\"red\">$1</span>",
+                  10, {"/home/ryan/Mail/Alipay/Tome"})
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -192,16 +197,24 @@ do
    -- Create a tasklist widget
    mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
    -- Create a taglist widget
-   mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, mytaglist.buttons)
+   -- mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, mytaglist.buttons)
+   mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
    -- Create the wibox
-   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.8, height=38 })
+   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.8, height=19 })
    mywibox[s].visible = true
 
    -- Widgets that are aligned to the left
    local left_layout = wibox.layout.fixed.horizontal()
    -- left_layout:add(mylauncher)
    left_layout:add(mytaglist[s])
+   left_layout:add(mystar)
+   left_layout:add(myweather)
+   left_layout:add(mybat)
+   left_layout:add(myvolume)
+   left_layout:add(mymdir)
+   left_layout:add(musicwidget.widget)
+   left_layout:add(mywifi)
    -- left_layout:add(mypromptbox[s])
 
    -- Widgets that are aligned to the right
@@ -228,7 +241,7 @@ do
    layout:set_first(top_layout)
    layout:set_second(bottom_layout)
 
-   mywibox[s]:set_widget(layout)
+   mywibox[s]:set_widget(top_layout)
 end
 -- }}}
 
