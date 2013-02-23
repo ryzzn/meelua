@@ -21,15 +21,15 @@ local function chat(p, place)
       local cs = 0
       local bs = 0
       for k, c in ipairs(cls) do
-         if (c.class == "AliWangWang"
-             and not string.find(c.name, "^Form"))
+         if (c.class == "AliWangWang")
          then
-            if string.find(c.name, "^阿里旺旺")
-            then
+         if string.find(c.name, "^阿里旺旺 - ")
+           then
                bs = bs + 1
-            else
+         elseif string.find(c.name, " (.*)$")
+           then
                cs = cs + 1
-            end
+           end
          end
       end
 
@@ -38,17 +38,17 @@ local function chat(p, place)
       local width = wa.width * 3 / (4 * cs)
       for k, c in ipairs(cls) do
          local g = {}
-         if (c.class == "AliWangWang"
-             and not string.find(c.name, "^Form"))
+         if (c.class == "AliWangWang")
          then
             if ( place == "left" )  then
-               if string.find(c.name, "^阿里旺旺")
+               if string.find(c.name, "^阿里旺旺 - ")
                then
                   g.x = wa.x
                   g.y = wa.y
                   g.width = wa.width / 4
                   g.height = wa.height
-               else
+               elseif string.find(c.name,  " (.*)$")
+               then
                   g.x = wa.width / 4 + cell * width
                   g.y = wa.y
                   g.width = width
@@ -57,12 +57,14 @@ local function chat(p, place)
                end
             end
             if ( place == "right" ) then
-               if string.find(c.name, "^阿里旺旺") then
+               if string.find(c.name, "^阿里旺旺 - ")
+               then
                   g.x = wa.width - wa.width / 4
                   g.y = wa.y
                   g.width = wa.width / 4
                   g.height = wa.height
-               else
+               elseif string.find(c.name,  " (.*)$")
+               then
                   g.x = wa.x + cell * width
                   g.y = wa.y
                   g.width = width
