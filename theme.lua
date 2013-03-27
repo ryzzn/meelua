@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2012-12-30 12:29:43 ryan>
+-- Time-stamp: <2013-03-04 20:15:18 ryan>
 
 local beautiful = require("beautiful")
 local gears = require("gears")
@@ -22,7 +22,7 @@ mytheme = {
 -- Themes define colours, icons, and wallpapers
 beautiful.init(mytheme.theme)
 beautiful.get().font = mytheme.font
-beautiful["layout_chatright"] = os.getenv("XDG_CONFIG_HOME") .. "/awesome/pic/chat.png"
+beautiful["layout_chatright"] = awful.util.getdir("config") .. "/pic/chat.png"
 
 -- {{{ Wallpaper
 if mytheme.wallpaper
