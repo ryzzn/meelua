@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-01-21 19:25:06 ryan>
+-- Time-stamp: <2013-03-27 15:19:35 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -25,7 +25,7 @@ mystar = wibox.widget.imagebox()
 
 require("awesompd/awesompd")
 musicwidget = awesompd:create() -- Create awesompd widget
-musicwidget.font = "Liberation Mono" -- Set widget font
+musicwidget.font = awesome.font
 musicwidget.scrolling = true -- If true, the text in the widget will be scrolled
 musicwidget.output_size = 30 -- Set the size of widget in symbols
 musicwidget.update_interval = 10 -- Set the update interval in seconds
@@ -79,11 +79,28 @@ vicious.register(_mpd, vicious.widgets.mpd,
                     " - <span color='yellowgreen'>${Title}</span>", 10)
 
 -- Create wifi status widget
+function wifi_format(wifi_w, args)
+    format = ""
+    if args["{ssid}"] == "N/A"
+    then
+      format = "WIFI: <span color='red'>${ssid}</span> "
+    else
+      format = "WIFI: <span color='blue'>${ssid}{${linp}%}</span> "
+    end
+    for var, val in pairs(args) do
+        format = format:gsub("$" .. (tonumber(var) and var or
+            var:gsub("[-+?*]", function(i) return "%"..i end)),
+        val)
+    end
+
+    return format
+end
+
 _wifi = wibox.widget.textbox()
 _wifi:set_font(theme.font)
 mywifi = wibox.layout.margin(_wifi, 4, 4)
 vicious.register(_wifi, vicious.widgets.wifi,
-                 "WIFI: ${ssid}{${linp}%}", 10, "wlan0")
+                 wifi_format, 10, "wlan0")
 
 -- Create battery status widget
 _bat = wibox.widget.textbox()
