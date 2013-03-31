@@ -1,7 +1,8 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-03-04 20:15:18 ryan>
+-- Time-stamp: <2013-03-31 17:49:02 ryan>
 
+local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
 local awesome = awesome
@@ -11,7 +12,7 @@ local o = require("meelua.conf")
 mytheme = {
    theme = o.theme,
    wallpaper = o.wallpaper,
-   font = "Terminus 8",
+   font = "Terminus 9",
    border_width  = 2,
    border_normal = "#3F3F3F",
    border_focus  = "#6F6F6F",
