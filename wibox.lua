@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-03-27 15:19:35 ryan>
+-- Time-stamp: <2013-04-01 01:17:59 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -12,9 +12,13 @@ local print = print
 local vicious = require("vicious")
 -- meelua
 local theme = require("meelua.theme")
-local weather = require("meelua.weather")
+-- local weather = require("meelua.weather")
+local blingbling = require("blingbling")
 local equal = require("meelua.equal")
 local o = require("meelua.conf")
+local u = require("meelua.util")
+local beautiful = require("beautiful")
+local json = require("json")	-- not installed by default in lua 5.2
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -25,7 +29,7 @@ mystar = wibox.widget.imagebox()
 
 require("awesompd/awesompd")
 musicwidget = awesompd:create() -- Create awesompd widget
-musicwidget.font = awesome.font
+-- musicwidget.font = awesome.font
 musicwidget.scrolling = true -- If true, the text in the widget will be scrolled
 musicwidget.output_size = 30 -- Set the size of widget in symbols
 musicwidget.update_interval = 10 -- Set the update interval in seconds
@@ -70,22 +74,31 @@ musicwidget:register_buttons({ { "", awesompd.MOUSE_LEFT, musicwidget:command_to
                                { modkey, "Pause", musicwidget:command_playpause() } })
 musicwidget:run() -- After all configuration is done, run the widget
 
--- Create mpd status widget
-_mpd = wibox.widget.textbox()
-_mpd:set_font(theme.font)
-mympd = wibox.layout.margin(_mpd, 4, 4)
-vicious.register(_mpd, vicious.widgets.mpd,
-                 "<span color='coral'>${Artist}</span>" ..
-                    " - <span color='yellowgreen'>${Title}</span>", 10)
+-- cpu_graph = blingbling.line_graph({height = 24,
+--                                    width = 160,
+--                                    show_text = true,
+--                                    label = "Load: $percent %",
+--                                    rounded_size = 0.3,
+--                                    font_size = 10,
+--                                    graph_background_color = "#00000033"})
+-- -- cpu_graph:set_height(18)
+-- --cpu_graph:set_width(200)
+-- --cpu_graph:set_show_text(true)
+-- -- cpu_graph:set_label("Load: $percent %")
+-- cpu_graph:set_rounded_size(0.3)
+-- -- cpu_graph:set_background_text_color("#00000033")
+-- -- cpu_graph:set_graph_background_color("#00000033")
+-- vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
 
--- Create wifi status widget
-function wifi_format(wifi_w, args)
+--{{---| WIFI widget |-------------------------------------------------------------------------------
+
+local function wifi_format(wifi_w, args)
     format = ""
     if args["{ssid}"] == "N/A"
     then
-      format = "WIFI: <span color='red'>${ssid}</span> "
+      format = '<span font="Terminus 12" bgcolor="FloralWhite"> ☯ <span font="Terminus 9" color="red">N/A</span> </span>'
     else
-      format = "WIFI: <span color='blue'>${ssid}{${linp}%}</span> "
+       format = '<span font="Terminus 12" bgcolor="FloralWhite"> ☯ <span font="Terminus 9">${ssid} [${linp}%]</span> </span>'
     end
     for var, val in pairs(args) do
         format = format:gsub("$" .. (tonumber(var) and var or
@@ -97,41 +110,88 @@ function wifi_format(wifi_w, args)
 end
 
 _wifi = wibox.widget.textbox()
-_wifi:set_font(theme.font)
-mywifi = wibox.layout.margin(_wifi, 4, 4)
 vicious.register(_wifi, vicious.widgets.wifi,
                  wifi_format, 10, "wlan0")
+mywifi = _wifi
 
--- Create battery status widget
+--{{---| Weather widget |-------------------------------------------------------------------------------
+
+local function read_json (path)
+   if not awful.util.file_readable(path)
+   then
+      return nil
+   end
+   local file = io.open(path)
+   local weather_info = file:read()
+   local weather_o = json.decode(weather_info)
+   -- return if file not match json form
+   if weather_o == nil
+      or weather_o.weatherinfo == nil
+   then
+      return nil
+   end
+   return weather_o
+end
+
+local function weather_format(w, args)
+   obj = read_json("/home/ryan/data/weather.json")
+   if nil == obj then return end
+   weatherinfo = obj.weatherinfo
+
+   local p_city = ' <span color="white">' .. weatherinfo.city .. '</span>'.. ' <span color="yellow">' .. weatherinfo.weather1 .. '</span>'
+   local p_temp = ' ' .. weatherinfo.temp1 .. ' '
+
+   return '<span font="Terminus 9" color="white" bgcolor="#A0CA99">' .. p_city .. p_temp .. '</span>'
+end
+
+myweather = wibox.widget.textbox()
+vicious.register(myweather, vicious.widgets.wifi, weather_format, 10, "wlan0")
+
+--{{---| Battery widget |-------------------------------------------------------------------------------
+
+_bat_icon = wibox.widget.imagebox(beautiful.widget_battery)
 _bat = wibox.widget.textbox()
 _bat:set_font(theme.font)
-mybat = wibox.layout.margin(_bat, 4, 4)
+local mybat = wibox.layout.fixed.horizontal()
+mybat:add(_bat_icon)
+mybat:add(_bat)
+-- mybat = wibox.layout.margin(_bat, 4, 4)
 vicious.register(_bat, vicious.widgets.bat,
-                 "<span color=\"lightblue\">Bat</span>:" ..
-                    " {<span color=\"red\">$1</span> $2%" ..
-                    " <span color=\"brown\">$3</span>}", 10, "BAT0")
+  '<span background="#92B0A0" font="Terminus 12"> <span font="Terminus 9" color="#FFFFFF" background="#92B0A0">$1$2% </span></span>', 1, "BAT0" )
 
--- Create volume status widget
-_volume = wibox.widget.textbox()
-_volume:set_font(theme.font)
-myvolume = wibox.layout.margin(_volume, 4, 4)
-myvolume_v = vicious.register(_volume,
-                              vicious.widgets.volume, "$1 $2", 10, "Master")
+--{{---| Net widget |-------------------------------------------------------------------------------
 
-_mdir = wibox.widget.textbox()
-_mdir:set_font(theme.font)
-mymdir = wibox.layout.margin(_mdir, 4, 4)
-vicious.register(_mdir,
-                 vicious.widgets.mdir, "Mail: <span color=\"red\">$1</span>",
-                  10, {"/home/ryan/Mail/Alipay/Tome"})
+local _net = wibox.widget.textbox()
+vicious.register(_net, vicious.widgets.net,
+                 '<span background="#C2C2A4" font="Terminus 12">'
+                 .. ' <span font="Terminus 9" color="#FFFFFF">${wlan0 down_kb}'
+                 .. ' ↓↑ ${wlan0 up_kb}</span> </span>', 3)
+local _net_icon = wibox.widget.imagebox(beautiful.widget_net)
+local mynet = wibox.layout.fixed.horizontal()
+mynet:add(_net_icon)
+mynet:add(_net)
+
+--{{---| Volume widget |-------------------------------------------------------------------------------
+
+local _volume = wibox.widget.textbox()
+myvolume_v = vicious.register(_volume, vicious.widgets.volume,
+      '<span bgcolor="Gainsboro"> <span font="monospace" font_weight="bold">♫ </span>$1 $2 </span>', 10, "Master")
+-- _volume:set_font(theme.font)
+local myvolume = _volume;
+
+--{{---| Mail widget |-------------------------------------------------------------------------------
+
+local _mdir = wibox.widget.textbox()
+vicious.register(_mdir, vicious.widgets.mdir,
+                 '<span bgcolor="Khaki"> <span font="Terminus 12">✉</span> <span color="red" font="Terminus 9">$1</span> </span>',
+                 10, {"/home/ryan/Mail/Alipay/Tome"})
+local mymdir = _mdir
 
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
-myweather = weather()
-myweather:set_font(theme.font)
 
 check_bat = timer({ timeout = 10 })
 check_bat:connect_signal("timeout",
@@ -218,24 +278,33 @@ do
    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
    -- Create the wibox
-   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.8, height=19 })
+   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.8, height=16 })
    mywibox[s].visible = true
 
    -- Widgets that are aligned to the left
    local left_layout = wibox.layout.fixed.horizontal()
    -- left_layout:add(mylauncher)
    left_layout:add(mytaglist[s])
-   left_layout:add(mystar)
-   left_layout:add(myweather)
-   left_layout:add(mybat)
-   left_layout:add(myvolume)
-   left_layout:add(mymdir)
-   left_layout:add(musicwidget.widget)
-   left_layout:add(mywifi)
    -- left_layout:add(mypromptbox[s])
 
    -- Widgets that are aligned to the right
    local right_layout = wibox.layout.fixed.horizontal()
+--   right_layout:add(mystar)
+   right_layout:add(u.arrow(8, 16, beautiful.bg_normal, "#A0CA99"))
+   right_layout:add(myweather)
+   right_layout:add(u.arrow(8, 16, "#A0CA99", "#92B0A0"))
+   right_layout:add(mybat)
+   right_layout:add(u.arrow(8, 16, "#92B0A0", "#C2C2A4"))
+   right_layout:add(mynet)
+   right_layout:add(u.arrow(8, 16, "#C2C2A4", "#DCDCDC"))
+   right_layout:add(myvolume)
+   right_layout:add(u.arrow(8, 16, "#DCDCDC", "#F0E68C"))
+   right_layout:add(mymdir)
+   right_layout:add(u.arrow(8, 16, "#F0E68C", "#FFFAF0"))
+   right_layout:add(mywifi)
+   right_layout:add(u.arrow(8, 16, "#FFFAF0", "#2F4F4F"))
+   right_layout:add(musicwidget.widget)
+   right_layout:add(u.arrow(8, 16, "#2F4F4F", beautiful.bg_normal))
    if s == 1 then right_layout:add(wibox.widget.systray()) end
    right_layout:add(mytextclock)
    right_layout:add(mylayoutbox[s])
@@ -248,7 +317,7 @@ do
 
    local bottom_layout = wibox.layout.fixed.horizontal()
    bottom_layout:add(mystar)
-   bottom_layout:add(myweather)
+--   bottom_layout:add(myweather)
    bottom_layout:add(mybat)
    bottom_layout:add(myvolume)
    bottom_layout:add(musicwidget.widget)
