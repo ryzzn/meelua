@@ -1,5 +1,8 @@
 MeeLua - A way to organize my configure of awesome window manager
-======
+# Screenshot
+![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot.png)
+
+# structure
 
     ├── button.lua
     ├── chat.lua
