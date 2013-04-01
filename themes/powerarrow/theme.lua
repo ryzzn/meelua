@@ -18,15 +18,13 @@ local _,_,dirname = string.find(debug.getinfo(1).short_src, [[^(.*)/([^/]-)/([^/
 themes_dir      = dirname
 themes_dir = "/home/ryan/.config/awesome/meelua/themes"
 
-theme.wallpaper_cmd = { "awsetbg /home/rom/.config/awesome/themes/powerarrow/wallpapers/wallpaper-2552963.jpg" }
-
 theme.font                                  = "Terminus 9"
-theme.fg_normal                             = "#AAAAAA"
+theme.fg_normal                             = "#FFFFFF"
 theme.fg_focus                              = "#F0DFAF"
-theme.fg_urgent                             = "#CC9393"
+theme.fg_urgent                             = "#3F3F3F"
 theme.bg_normal                             = "#222222"
 theme.bg_focus                              = "#1E2320"
-theme.bg_urgent                             = "#3F3F3F"
+theme.bg_urgent                             = "#CC9393"
 theme.border_width                          = "0"
 theme.border_normal                         = "#3F3F3F"
 theme.border_focus                          = "#6F6F6F"
@@ -36,7 +34,7 @@ theme.titlebar_bg_normal                    = "#3F3F3F"
 theme.binclock_bg                           = "#777e76"
 theme.binclock_fga                          = "#CCCCCC"
 theme.binclock_fgi                          = "#444444"
--- theme.taglist_bg_focus                      = black
+theme.taglist_bg_focus                      = "#333333"
 theme.taglist_fg_focus                      = dblue
 theme.tasklist_bg_focus                     = "#222222"
 theme.tasklist_fg_focus                     = dblue
@@ -59,7 +57,7 @@ theme.awful_widget_color                    = dblue
 theme.awful_widget_gradien_color_1          = orange
 theme.awful_widget_gradien_color_2          = orange
 theme.awful_widget_gradien_color_3          = orange
-theme.awful_widget_height                   = 14
+theme.awful_widget_height                   = 16
 theme.awful_widget_margin_top               = 2
 
 -- There are other variable sets

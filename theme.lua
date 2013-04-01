@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-03-31 17:49:02 ryan>
+-- Time-stamp: <2013-04-01 14:22:49 ryan>
 
 local awful = require("awful")
 local beautiful = require("beautiful")
@@ -24,6 +24,8 @@ mytheme = {
 beautiful.init(mytheme.theme)
 beautiful.get().font = mytheme.font
 beautiful["layout_chatright"] = awful.util.getdir("config") .. "/pic/chat.png"
+beautiful["icon_battery"] = awful.util.getdir("config") .. "/pic/icon_battery.png"
+beautiful["icon_net"] = awful.util.getdir("config") .. "/pic/icon_net.png"
 
 -- {{{ Wallpaper
 if mytheme.wallpaper
