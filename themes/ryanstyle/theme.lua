@@ -2,18 +2,16 @@
 
 --{{{ Main
 awful = require("awful")
-awful = require("awful")
 
 theme = {}
 
-local _,_,dirname=string.find(debug.getinfo(1).short_src, [[^(.*)/([^/]-)$]])
-themedir      = dirname
-
+local _,_,dirname=string.find(debug.getinfo(1, "S").source, [[^@(.*)/([^/]-)$]])
+themedir = dirname
 --}}}
 
 --/// Styles
 
-theme.font      = "Terminus 8"
+theme.font      = "Terminus 9"
 
 --// Colors
 theme.fg_normal = "#808080"
@@ -25,7 +23,7 @@ theme.bg_urgent = "#ffc0c0"
 --//
 
 --// Borders
-theme.border_width  = "3"
+theme.border_width  = "0"
 theme.border_normal = "#121212"
 theme.border_focus  = theme.fg_focus
 theme.border_marked = "#000000"
