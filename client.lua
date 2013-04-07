@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2013-03-27 14:56:13 ryan>
+-- Time-stamp: <2013-04-08 00:16:19 ryan>
 
 local awful = require("awful")
 local rules = require("awful.rules")
@@ -37,8 +37,10 @@ rules.rules = {
      properties = { floating = true } },
    { rule = { class = "gimp" },
      properties = { floating = true } },
-   { rule = { class = "feh" },
-     properties = { floating = true } },
+   { rule_any = { class = {"feh", "Display"},
+                  name = {"feh", "display"} },
+     properties = { floating = true,
+                    callback = function (c) awful.placement.centered(c) end } },
    { rule = { class = "Conky" },
      properties = { floating = true,
                     size_hits_honor = false,
