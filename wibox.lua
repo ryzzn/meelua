@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-04-01 15:11:16 ryan>
+-- Time-stamp: <2013-04-19 11:42:53 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -141,12 +141,16 @@ vicious.register(_bat, vicious.widgets.bat,
 local _net = wibox.widget.textbox()
 local _net_icon = wibox.widget.imagebox(beautiful.icon_net)
 local mynet = wibox.layout.fixed.horizontal()
+local _net_dev = io.popen('ip route list match 0 | cut -d" " -f 5'):read()
+local _net_ip = io.popen('ip route list match 0 | cut -d" " -f 3'):read()
 mynet:add(_net_icon)
 mynet:add(_net)
 vicious.register(_net, vicious.widgets.net,
+                 string.format(
                  '<span background="#C2C2A4" font="Terminus 12">'
-                 .. ' <span font="Terminus 9" color="#FFFFFF">${wlan0 down_kb}'
-                 .. ' ↓↑ ${wlan0 up_kb}</span> </span>', 3)
+                 .. ' <span font="Terminus 9" color="#FFFFFF">${%s down_kb}'
+                 .. ' ↓↑ ${%s up_kb} [%s]</span> </span>',
+                 _net_dev, _net_dev, _net_ip), 3)
 
 --{{---| Volume widget |-------------------------------------------------------------------------------
 
@@ -158,11 +162,20 @@ local myvolume = _volume;
 
 --{{---| Mail widget |-------------------------------------------------------------------------------
 
-local _mdir = wibox.widget.textbox()
-vicious.register(_mdir, vicious.widgets.mdir,
-                 '<span bgcolor="Khaki"> <span font="Terminus 12">✉</span> <span color="red" font="Terminus 9">$1</span> </span>',
+local _mdir_icon = wibox.widget.textbox()
+local _mdir_tome = wibox.widget.textbox()
+local _mdir_inbox = wibox.widget.textbox()
+_mdir_icon:set_markup('<span bgcolor="Khaki" font="Terminus 12"> ✉ </span>')
+vicious.register(_mdir_tome, vicious.widgets.mymdir,
+                 '<span bgcolor="Khaki" font="Terminus 12"><span font="Terminus 9">ToMe: <span color="red">$1</span></span> </span>',
                  10, {"/home/ryan/Mail/Alipay/Tome"})
-local mymdir = _mdir
+vicious.register(_mdir_inbox, vicious.widgets.mymdir,
+                 '<span bgcolor="Khaki" font="Terminus 12"><span font="Terminus 9">Inbox: <span color="red">$2</span></span> </span>',
+                 10, {"/home/ryan/Mail/Alipay/Inbox"})
+local mymdir = wibox.layout.fixed.horizontal()
+mymdir:add(_mdir_icon)
+mymdir:add(_mdir_tome)
+mymdir:add(_mdir_inbox)
 
 --{{---| Time clock widget |-------------------------------------------------------------------------------
 myclock = wibox.widget.textbox()
