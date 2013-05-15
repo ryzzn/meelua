@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-04-19 11:42:53 ryan>
+-- Time-stamp: <2013-05-15 22:45:26 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -142,7 +142,7 @@ local _net = wibox.widget.textbox()
 local _net_icon = wibox.widget.imagebox(beautiful.icon_net)
 local mynet = wibox.layout.fixed.horizontal()
 local _net_dev = io.popen('ip route list match 0 | cut -d" " -f 5'):read()
-local _net_ip = io.popen('ip route list match 0 | cut -d" " -f 3'):read()
+local _net_ip = io.popen("ip route get 1.1.1.1 | head -n 1 | awk '{print $NF}'"):read()
 mynet:add(_net_icon)
 mynet:add(_net)
 vicious.register(_net, vicious.widgets.net,
