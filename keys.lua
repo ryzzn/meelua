@@ -1,6 +1,6 @@
 -- Author: Yudi Shi <a@sydi.org>
 -- Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2012-12-27 20:58:33 ryan>
+-- Time-stamp: <2013-06-06 21:23:58 ryan>
 
 local o = require("meelua.conf")
 local awful = require("awful")
@@ -22,7 +22,9 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
    awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
+   awful.key({ modkey,           }, ";",   awful.tag.viewprev       ),
    awful.key({ modkey,           }, "Right", awful.tag.viewnext        ),
+   awful.key({ modkey,           }, "'", awful.tag.viewnext        ),
    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
    awful.key({ modkey,           }, "j",
@@ -56,17 +58,19 @@ globalkeys = awful.util.table.join(
                    client.focus:raise()
                 end
              end),
-   awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-   awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
+   awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact( 0.05)    end),
+   awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
+
    awful.key({ modkey,           }, "space", function () awful.layout.inc(o.layouts,  1) end),
    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(o.layouts, -1) end),
 
    awful.key({ modkey, "Shift" }, "n", awful.client.restore),
 
+   
    -- start program
    awful.key({ modkey,           }, "Return", function () awful.util.spawn(o.terminal) end),
 
@@ -80,7 +84,7 @@ globalkeys = awful.util.table.join(
              end),
 
    -- take screenshot
-   awful.key({modkey, }, "s",
+   awful.key({modkey, }, "s", false,
              function ()
                 awful.util.spawn("scrot -e 'mv $f " .. o.screenshots_dir .. " 2>/dev/null'")
              end),
@@ -90,7 +94,7 @@ globalkeys = awful.util.table.join(
              end),
 
    -- screen saver
-   awful.key({ modkey, "Control" }, "l", function () awful.util.spawn("xscreensaver-command -lock") end),
+   awful.key({ modkey, }, "`", function () awful.util.spawn("xscreensaver-command -lock") end),
 
    -- audio sound control
    awful.key({}, "XF86AudioRaiseVolume", function () io.popen("amixer sset Master 5+"):close() myvolume_v.update() end),
