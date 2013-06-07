@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2013-04-08 00:16:19 ryan>
+-- Time-stamp: <2013-06-07 18:42:27 ryan>
 
 local awful = require("awful")
 local rules = require("awful.rules")
@@ -60,7 +60,13 @@ rules.rules = {
    { rule = { class = "Emacs" },
      properties = { tag = tags[1][2],
                     switchtotag = true}},
-   { rule = { class = "Chromium" },
+   { rule = { class = "Chromium",
+              type = "dialog" },
+     properties = { tag = tags[1][3],
+                    floating = true,
+                    callback = function (c) awful.placement.centered(c) end } },
+   { rule = { class = "Chromium",
+              type = "normal" },
      properties = { tag = tags[1][3],
                     maximized_vertical = true,
                     maximized_horizontal = true}},
