@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-04-01 14:22:49 ryan>
+-- Time-stamp: <2013-05-22 19:06:41 ryan>
 
 local awful = require("awful")
 local beautiful = require("beautiful")
@@ -13,7 +13,7 @@ mytheme = {
    theme = o.theme,
    wallpaper = o.wallpaper,
    font = "Terminus 9",
-   border_width  = 2,
+   border_width  = 0,
    border_normal = "#3F3F3F",
    border_focus  = "#6F6F6F",
    border_marked = "#CC9393",
