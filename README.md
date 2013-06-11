@@ -1,21 +1,8 @@
 MeeLua - A way to organize my configure of awesome window manager
-# Screenshot
+
+Thx for many others' configuration for awesome wm. It's my style for
+me, maybe you'll lovin it.
+
+# Screenshot [prestyle]
 ![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot.png)
 
-# structure
-    ├── button.lua
-    ├── chat.lua
-    ├── client.lua
-    ├── conf.lua
-    ├── equal.lua
-    ├── init.lua
-    ├── json.lua
-    ├── keys.lua
-    ├── menu.lua
-    ├── README.md
-    ├── tags.lua
-    ├── theme.lua
-    ├── util.lua
-    ├── volume.lua
-    ├── weather.lua
-    └── wibox.lua

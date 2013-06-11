@@ -1,27 +1,41 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-05-15 22:45:26 ryan>
+-- Time-stamp: <2013-06-11 23:30:47 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
 -- Notification library
 local naughty = require("naughty")
-local client = client
-local print = print
 -- vicious
 local vicious = require("vicious")
 -- meelua
 local theme = require("meelua.theme")
--- local weather = require("meelua.weather")
-local blingbling = require("blingbling")
-local equal = require("meelua.equal")
 local o = require("meelua.conf")
 local u = require("meelua.util")
 local beautiful = require("beautiful")
-local json = require("json")	-- not installed by default in lua 5.2
+local json = require("json")    -- not installed by default in lua 5.2
+
+-- Colours
+coldef  = "</span>"
+colwhi  = "<span color='#b2b2b2'>"
+colbwhi = "<span color='#ffffff'>"
+blue = "<span color='#7493d2'>"
+yellow = "<span color='#e0da37'>"
+purple = "<span color='#e33a6e'>"
+lightpurple = "<span color='#eca4c4'>"
+azure = "<span color='#80d9d8'>"
+green = "<span color='#87af5f'>"
+lightgreen = "<span color='#62b786'>"
+red = "<span color='#e54c62'>"
+orange = "<span color='#ff7100'>"
+brown = "<span color='#db842f'>"
+fuchsia = "<span color='#800080'>"
+gold = "<span color='#e7b400'>"
+
+local scriptdir = o.mee_home .. "/scripts"
 
 --{{---| MPD widget |-------------------------------------------------------------------------------
-require("awesompd/awesompd")
+local awesompd = require("meelua.awesompd.awesompd")
 musicwidget = awesompd:create() -- Create awesompd widget
 -- musicwidget.font = awesome.font
 musicwidget.scrolling = true -- If true, the text in the widget will be scrolled
@@ -36,6 +50,10 @@ musicwidget.jamendo_format = awesompd.FORMAT_MP3
 -- If true, song notifications for Jamendo tracks and local tracks will also contain
 -- album cover image.
 musicwidget.show_album_cover = true
+-- font
+musicwidget.font = theme.font
+-- font color
+musicwidget.font_color = '#800080'
 -- Specify how big in pixels should an album cover be. Maximum value
 -- is 100.
 musicwidget.album_cover_size = 50
@@ -68,15 +86,120 @@ musicwidget:register_buttons({ { "", awesompd.MOUSE_LEFT, musicwidget:command_to
                                { modkey, "Pause", musicwidget:command_playpause() } })
 musicwidget:run() -- After all configuration is done, run the widget
 
---{{---| WIFI widget |-------------------------------------------------------------------------------
+--{{---| Time clock widget |-------------------------------------------------------------------------------
+char_width = nil
+text_color = theme.fg_normal or "#FFFFFF"
+today_color = theme.fg_focus or "#00FF00"
+calendar_width = 21
 
+local calendar = nil
+local offset = 0
+
+local data = nil
+
+local function pop_spaces(s1, s2, maxsize)
+   local sps = ""
+   for i = 1, maxsize - string.len(s1) - string.len(s2) do
+      sps = sps .. " "
+   end
+   return s1 .. sps .. s2
+end
+
+local function create_calendar()
+   offset = offset or 0
+
+   local now = os.date("*t")
+   local cal_month = now.month + offset
+   local cal_year = now.year
+   if cal_month > 12 then
+      cal_month = (cal_month % 12)
+      cal_year = cal_year + 1
+   elseif cal_month < 1 then
+      cal_month = (cal_month + 12)
+      cal_year = cal_year - 1
+   end
+
+   local last_day = os.date("%d", os.time({ day = 1, year = cal_year,
+                                            month = cal_month + 1}) - 86400)
+   local first_day = os.time({ day = 1, month = cal_month, year = cal_year})
+   local first_day_in_week =
+      os.date("%w", first_day)
+   local result = "Sun Mon Tue Wes Thu Fri Sat\n"
+   for i = 1, first_day_in_week do
+      result = result .. "    "
+   end
+
+   local this_month = false
+   for day = 1, last_day do
+      local last_in_week = (day + first_day_in_week) % 7 == 0
+      local day_str = pop_spaces("", day, 3) .. (last_in_week and "" or " ")
+      if cal_month == now.month and cal_year == now.year and day == now.day then
+         this_month = true
+         result = result ..
+            string.format('<span weight="bold" foreground = "%s">%s</span>',
+                          today_color, day_str)
+      else
+         result = result .. day_str
+      end
+      if last_in_week and day ~= last_day then
+         result = result .. "\n"
+      end
+   end
+
+   local header
+   if this_month then
+      header = os.date("%a, %d %b %Y")
+   else
+      header = os.date("%B %Y", first_day)
+   end
+   return header, string.format('<span font="%s" foreground="%s">%s</span>',
+                                theme.font, text_color, result)
+end
+
+local function calculate_char_width()
+   return beautiful.get_font_height(theme.font) * 0.555
+end
+
+local function hide()
+   if calendar ~= nil then
+      naughty.destroy(calendar)
+      calendar = nil
+      offset = 0
+   end
+end
+
+local function show(inc_offset)
+   inc_offset = inc_offset or 0
+
+   local save_offset = offset
+   hide()
+   offset = save_offset + inc_offset
+
+   local char_width = char_width or calculate_char_width()
+   local header, cal_text = create_calendar()
+   calendar = naughty.notify({ title = header,
+                               text = cal_text,
+                               timeout = 0, hover_timeout = 0.5,
+                            })
+end
+
+myclock = wibox.widget.textbox()
+vicious.register(myclock, vicious.widgets.date,
+ "<span color='#7788af'> %A %d %B</span> " .. blue .. "</span><span color=\"#343639\">></span> <span color='#de5e1e'>%H:%M</span> ", 60)
+
+myclock:connect_signal("mouse::enter", function() show(0) end)
+myclock:connect_signal("mouse::leave", hide)
+myclock:buttons(awful.util.table.join(awful.button({ }, 1, function() show(-1) end),
+                                      awful.button({ }, 3, function() show(1) end)))
+
+--{{---| WIFI widget |-------------------------------------------------------------------------------
 local function wifi_format(wifi_w, args)
     format = ""
     if args["{ssid}"] == "N/A"
     then
-      format = '<span font="Terminus 12" bgcolor="FloralWhite"> ☯ <span font="Terminus 9" color="red">N/A</span> </span>'
+      format = azure .. '☯ N/A' .. coldef
     else
-       format = '<span font="Terminus 12" bgcolor="FloralWhite"> ☯ <span font="Terminus 9">${ssid} [${linp}%]</span> </span>'
+       format = azure .. '☯ ${ssid} [${linp}%]' .. coldef
     end
     for var, val in pairs(args) do
         format = format:gsub("$" .. (tonumber(var) and var or
@@ -90,7 +213,7 @@ end
 _wifi = wibox.widget.textbox()
 vicious.register(_wifi, vicious.widgets.wifi,
                  wifi_format, 10, "wlan0")
-mywifi = _wifi
+mywifi = wibox.layout.margin(_wifi, 4)
 
 --{{---| Weather widget |-------------------------------------------------------------------------------
 
@@ -119,68 +242,195 @@ local function weather_format(w, args)
    local p_city = ' <span color="white">' .. weatherinfo.city .. '</span>'.. ' <span color="yellow">' .. weatherinfo.weather1 .. '</span>'
    local p_temp = ' ' .. weatherinfo.temp1 .. ' '
 
-   return '<span font="Terminus 9" color="white" bgcolor="#A0CA99">' .. p_city .. p_temp .. '</span>'
+   return '<span font="Terminus 9" color="white">' .. p_city .. p_temp .. '</span>'
 end
 
 myweather = wibox.widget.textbox()
 vicious.register(myweather, vicious.widgets.wifi, weather_format, 10, "wlan0")
 
+
 --{{---| Battery widget |-------------------------------------------------------------------------------
 
 local _bat = wibox.widget.textbox()
-local _bat_icon = wibox.widget.imagebox(beautiful.icon_battery)
+local _bat_icon = wibox.widget.imagebox(beautiful.widget_batt)
 local mybat = wibox.layout.fixed.horizontal()
 mybat:add(_bat_icon)
 mybat:add(_bat)
+
+function batstate()
+     local file = io.open("/sys/class/power_supply/BAT0/status", "r")
+
+     if (file == nil) then
+          return "Cable plugged"
+     end
+
+     local batstate = file:read("*line")
+     file:close()
+
+     if (batstate == 'Discharging' or batstate == 'Charging') then
+          return batstate
+     else
+          return "Fully charged"
+     end
+end
+
 vicious.register(_bat, vicious.widgets.bat,
-  '<span background="#92B0A0" font="Terminus 12"> <span font="Terminus 9" color="#FFFFFF" background="#92B0A0">$1$2% </span></span>', 1, "BAT0" )
--- mybat = wibox.layout.margin(_bat, 4, 4)
+     function (widget, args)
+          -- plugged
+          if (batstate() == 'Cable plugged') then return "AC "
+          -- critical
+          elseif (args[2] <= 5 and batstate() == 'Discharging') then
+               naughty.notify({
+                    text = "sto per spegnermi...",
+                    title = "Carica quasi esaurita!",
+                    position = "top_right",
+                    timeout = 1,
+                    fg="#000000",
+                    bg="#ffffff",
+                    screen = 1,
+                    ontop = true,
+               })
+          -- low
+          elseif (args[2] <= 10 and batstate() == 'Discharging') then
+               naughty.notify({
+                    text = "attacca il cavo!",
+                    title = "Carica bassa",
+                    position = "top_right",
+                    timeout = 1,
+                    fg="#ffffff",
+                    bg="#262729",
+                    screen = 1,
+                    ontop = true,
+               })
+          end
+          return " " .. args[2] .. "%"
+     end, 1, 'BAT0')
+local mybat = wibox.layout.margin(mybat, 0, 0)
+
+-- CPU widget
+cpuicon = wibox.widget.imagebox()
+cpuicon:set_image(beautiful.widget_cpu)
+cpuwidget = wibox.widget.textbox()
+vicious.register(cpuwidget, vicious.widgets.cpu, purple .. "$1%" .. coldef, 3)
+cpuicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(tasks, false) end)))
+local mycpu = wibox.layout.fixed.horizontal()
+mycpu:add(cpuicon)
+mycpu:add(cpuwidget)
+
+-- Memory widget
+memicon = wibox.widget.imagebox()
+memicon:set_image(beautiful.widget_mem)
+memwidget = wibox.widget.textbox()
+vicious.register(memwidget, vicious.widgets.mem, yellow .. "$2M" .. coldef, 1)
+local mymem = wibox.layout.fixed.horizontal()
+mymem:add(memicon)
+mymem:add(memwidget)
+
+-- Temp widget
+tempicon = wibox.widget.imagebox()
+tempicon:set_image(beautiful.widget_temp)
+tempicon:buttons(awful.util.table.join(
+    awful.button({ }, 1, function () awful.util.spawn(terminal .. " -e sudo powertop ", false) end)
+    ))
+   tempwidget = wibox.widget.textbox()
+   vicious.register(tempwidget, vicious.widgets.thermal, "<span color=\"#f1af5f\">$1°C</span>", 9, {"coretemp.0", "core"} )
+local mytemp = wibox.layout.fixed.horizontal()
+mytemp:add(tempicon)
+mytemp:add(tempwidget)
+
+-- /home fs widget
+fshicon = wibox.widget.imagebox()
+fshicon:set_image(theme.confdir .. "/widgets/fs.png")
+fshwidget = wibox.widget.textbox()
+    vicious.register(fshwidget, vicious.widgets.fs,
+    function (widget, args)
+        if args["{/home used_p}"] >= 95 and args["{/home used_p}"] < 99 then
+            return colwhi .. args["{/home used_p}"] .. "%" .. coldef
+        elseif args["{/home used_p}"] >= 99 and args["{/home used_p}"] <= 100 then
+            naughty.notify({ title = "Attenzione", text = "Partizione /home esaurita!\nFa' un po' di spazio.",
+                             timeout = 10,
+                             position = "top_right",
+                             fg = beautiful.fg_urgent,
+                             bg = beautiful.bg_urgent })
+            return colwhi .. args["{/home used_p}"] .. "%" .. coldef
+        else
+            return azure .. args["{/home used_p}"] .. "%" .. coldef
+        end
+    end, 620)
+
+local infos = nil
+
+function remove_info()
+    if infos ~= nil then 
+        naughty.destroy(infos)
+        infos = nil
+    end
+end
+
+function add_info()
+    remove_info()
+    local capi = {
+                mouse = mouse,
+                screen = screen
+          }
+    local cal = awful.util.pread(scriptdir .. "/dfs")
+    cal = string.gsub(cal, "          ^%s*(.-)%s*$", "%1")
+    infos = naughty.notify({
+        text = string.format('<span font_desc="%s">%s</span>', "Terminus", cal),
+        timeout = 0,
+        position = "top_right",
+        margin = 10,
+        height = 170,
+        width = 585,
+        screen  = capi.mouse.screen
+    })
+end
+
+fshwidget:connect_signal('mouse::enter', function () add_info() end)
+fshwidget:connect_signal('mouse::leave', function () remove_info() end)
+
+local myfsh = wibox.layout.fixed.horizontal()
+myfsh:add(fshicon)
+myfsh:add(fshwidget)
 
 --{{---| Net widget |-------------------------------------------------------------------------------
 
-local _net = wibox.widget.textbox()
-local _net_icon = wibox.widget.imagebox(beautiful.icon_net)
 local mynet = wibox.layout.fixed.horizontal()
-local _net_dev = io.popen('ip route list match 0 | cut -d" " -f 5'):read()
-local _net_ip = io.popen("ip route get 1.1.1.1 | head -n 1 | awk '{print $NF}'"):read()
-mynet:add(_net_icon)
-mynet:add(_net)
-vicious.register(_net, vicious.widgets.net,
-                 string.format(
-                 '<span background="#C2C2A4" font="Terminus 12">'
-                 .. ' <span font="Terminus 9" color="#FFFFFF">${%s down_kb}'
-                 .. ' ↓↑ ${%s up_kb} [%s]</span> </span>',
-                 _net_dev, _net_dev, _net_ip), 3)
+netdownicon = wibox.widget.imagebox()
+netdownicon:set_image(beautiful.widget_netdown)
+netdownicon.align = "middle"
+netdowninfo = wibox.widget.textbox()
+vicious.register(netdowninfo, vicious.widgets.net, green .. "${wlan0 down_kb}" .. coldef, 1)
+netupicon = wibox.widget.imagebox()
+netupicon:set_image(beautiful.widget_netup)
+netupicon.align = "middle"
+netupinfo = wibox.widget.textbox()
+vicious.register(netupinfo, vicious.widgets.net, red .. "${wlan0 up_kb}" .. coldef, 1)
+mynet:add(netdownicon)
+mynet:add(netdowninfo)
+mynet:add(netupicon)
+mynet:add(netupinfo)
 
 --{{---| Volume widget |-------------------------------------------------------------------------------
 
 local _volume = wibox.widget.textbox()
-myvolume_v = vicious.register(_volume, vicious.widgets.volume,
-      '<span bgcolor="Gainsboro"> <span font="monospace" font_weight="bold">♫ </span>$1 $2 </span>', 10, "Master")
--- _volume:set_font(theme.font)
-local myvolume = _volume;
+local myvolume_v = vicious.register(_volume, vicious.widgets.volume,
+      blue .. '♫ $1%' .. coldef, 10, "Master")
+local myvolume = wibox.layout.margin(_volume, 4)
 
 --{{---| Mail widget |-------------------------------------------------------------------------------
 
 local _mdir_icon = wibox.widget.textbox()
 local _mdir_tome = wibox.widget.textbox()
 local _mdir_inbox = wibox.widget.textbox()
-_mdir_icon:set_markup('<span bgcolor="Khaki" font="Terminus 12"> ✉ </span>')
+_mdir_icon:set_markup(purple .. '✉ ' .. coldef)
 vicious.register(_mdir_tome, vicious.widgets.mymdir,
-                 '<span bgcolor="Khaki" font="Terminus 12"><span font="Terminus 9">ToMe: <span color="red">$1</span></span> </span>',
+                 purple .. 'Mail: $1' .. coldef,
                  10, {"/home/ryan/Mail/Alipay/Tome"})
-vicious.register(_mdir_inbox, vicious.widgets.mymdir,
-                 '<span bgcolor="Khaki" font="Terminus 12"><span font="Terminus 9">Inbox: <span color="red">$2</span></span> </span>',
-                 10, {"/home/ryan/Mail/Alipay/Inbox"})
 local mymdir = wibox.layout.fixed.horizontal()
 mymdir:add(_mdir_icon)
 mymdir:add(_mdir_tome)
-mymdir:add(_mdir_inbox)
-
---{{---| Time clock widget |-------------------------------------------------------------------------------
-myclock = wibox.widget.textbox()
-vicious.register(myclock, vicious.widgets.date,
- '<span font="Terminus 12" bgcolor="#BACCBA" fgcolor="#FFFFFF"> <span font="Terminus 9">%a %b %d, %H:%M</span> </span>', 60)
+mymdir = wibox.layout.margin(mymdir, 4)
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -280,27 +530,24 @@ do
    local left_layout = wibox.layout.fixed.horizontal()
    -- left_layout:add(mylauncher)
    left_layout:add(mytaglist[s])
+   left_layout:add(musicwidget.widget)
    -- left_layout:add(mypromptbox[s])
 
    -- Widgets that are aligned to the right
    local right_layout = wibox.layout.fixed.horizontal()
-   right_layout:add(u.arrow(8, 16, beautiful.bg_normal, "#A0CA99"))
-   right_layout:add(myweather)
-   right_layout:add(u.arrow(8, 16, "#A0CA99", "#92B0A0"))
-   right_layout:add(mybat)
-   right_layout:add(u.arrow(8, 16, "#92B0A0", "#C2C2A4"))
-   right_layout:add(mynet)
-   right_layout:add(u.arrow(8, 16, "#C2C2A4", "#DCDCDC"))
-   right_layout:add(myvolume)
-   right_layout:add(u.arrow(8, 16, "#DCDCDC", "#F0E68C"))
-   right_layout:add(mymdir)
-   right_layout:add(u.arrow(8, 16, "#F0E68C", "#FFFAF0"))
-   right_layout:add(mywifi)
-   right_layout:add(u.arrow(8, 16, "#FFFAF0", "#2F4F4F"))
-   right_layout:add(musicwidget.widget)
-   right_layout:add(u.arrow(8, 16, "#2F4F4F", beautiful.bg_normal))
+   right_layout:add(u.left_arrow(8, 16, beautiful.bg_normal, "#A0CA99"))
    if s == 1 then right_layout:add(wibox.widget.systray()) end
-   right_layout:add(u.arrow(8, 16, beautiful.bg_normal, "#BACCBA"))
+   right_layout:add(u.right_arrow(8, 16, beautiful.bg_normal, "#A0CA99"))
+   right_layout:add(myweather)
+   right_layout:add(mycpu)
+   right_layout:add(mymem)
+   right_layout:add(mytemp)
+   right_layout:add(mybat)
+   right_layout:add(mynet)
+   right_layout:add(myvolume)
+   right_layout:add(myfsh)
+   right_layout:add(mymdir)
+   right_layout:add(mywifi)
    right_layout:add(myclock)
    right_layout:add(mylayoutbox[s])
 
@@ -310,18 +557,6 @@ do
    top_layout:set_middle(mytasklist[s])
    top_layout:set_right(right_layout)
 
-   local bottom_layout = wibox.layout.fixed.horizontal()
-   bottom_layout:add(myweather)
-   bottom_layout:add(mybat)
-   bottom_layout:add(myvolume)
-   bottom_layout:add(musicwidget.widget)
-   bottom_layout:add(mywifi)
-
-   local layout = equal.two()
-   layout:set_first(top_layout)
-   layout:set_second(bottom_layout)
-
    mywibox[s]:set_widget(top_layout)
 end
 -- }}}
-
