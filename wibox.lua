@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-06-11 23:30:47 ryan>
+-- Time-stamp: <2013-06-12 00:00:17 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -424,7 +424,7 @@ local _mdir_icon = wibox.widget.textbox()
 local _mdir_tome = wibox.widget.textbox()
 local _mdir_inbox = wibox.widget.textbox()
 _mdir_icon:set_markup(purple .. '✉ ' .. coldef)
-vicious.register(_mdir_tome, vicious.widgets.mymdir,
+vicious.register(_mdir_tome, vicious.widgets.mdir,
                  purple .. 'Mail: $1' .. coldef,
                  10, {"/home/ryan/Mail/Alipay/Tome"})
 local mymdir = wibox.layout.fixed.horizontal()
