@@ -9,11 +9,7 @@ me, maybe you'll lovin it.
 # Screenshot [now]
 ![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot/s2.jpg)
 
-# Using this:
+# How to use :
+1. clone it to whatever place you like.
 
-1. export LUA_PATH=<<THIS PROJECT DIRECTORY>>
-
-2. make sure meelua is in lua package search path and edit ~/.config/awesome/rc.lua like this:
-    require("meelua")
-
-3. restart awesome wm (maybe mod + ctrl + r)
+2. make a link to the directory you cloned at step 1 named ~/.config/awesome. If it's exist before, backup it for other name.
