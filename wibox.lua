@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-06-12 22:40:37 ryan>
+-- Time-stamp: <2013-06-12 23:13:57 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -217,7 +217,7 @@ mywifi = wibox.layout.margin(_wifi, 4)
 
 --{{---| Weather widget |-------------------------------------------------------------------------------
 
-local function read_json (path)
+local function read_json(path)
    if not awful.util.file_readable(path)
    then
       return nil
@@ -281,24 +281,24 @@ vicious.register(_bat, vicious.widgets.bat,
           -- critical
           elseif (args[2] <= 5 and batstate() == 'Discharging') then
                naughty.notify({
-                    text = "sto per spegnermi...",
-                    title = "Carica quasi esaurita!",
+                    text = "Plz save file and halt your computer!",
+                    title = "Battery is eat up!",
                     position = "top_right",
                     timeout = 1,
-                    fg="#000000",
-                    bg="#ffffff",
+                    fg="#FFFFFF",
+                    bg="#A40004",
                     screen = 1,
                     ontop = true,
                })
           -- low
           elseif (args[2] <= 10 and batstate() == 'Discharging') then
                naughty.notify({
-                    text = "attacca il cavo!",
-                    title = "Carica bassa",
+                    text = "Battery is too low [" .. args[2] .. "%]",
+                    title = "Battery Warning",
                     position = "top_right",
                     timeout = 1,
-                    fg="#ffffff",
-                    bg="#262729",
+                    fg="#FFFFFF",
+                    bg="#E73A95",
                     screen = 1,
                     ontop = true,
                })
@@ -437,22 +437,6 @@ mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
-
-check_bat = timer({ timeout = 10 })
-check_bat:connect_signal("timeout",
-                         function ()
-                            local now = vicious.widgets.bat("", "BAT0")
-                            bat_per = tonumber(now[2])
-                            bat_stat = now[1]
-                            if bat_per < 10 and bat_stat ~= '+' then
-                               naughty.notify({preset = naughty.config.presets.critical,
-                                               title = "WARN",
-                                               text = "battery is lower than 10%..."
-                                              })
-                            end
-                         end)
-check_bat:start()
-
 
 mytaglist.buttons = awful.util.table.join(
    awful.button({ }, 1, awful.tag.viewonly),
