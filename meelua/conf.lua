@@ -30,11 +30,8 @@ mpc_client = "ncmpcpp"
 font = "Terminus 9"
 
 screenshots_dir = "~/personal/screenshots/"
--- wallpaper = "/home/ryan/personal/wallpapers/november-11-a_clearing_in_the_foggy_forest__5-nocal-1280x800_duclear.jpg"
-wallpaper = awful.util.getdir("config") .. "/wallpaper"
--- theme = awful.util.getdir("config") .. "/themes/cool-blue/theme.lua"
+wallpaper = awful.util.getdir("config") .. "/wallpaper.jpg"
 theme = awful.util.getdir("config") .. "/themes/multicolor/theme.lua"
--- theme = "/usr/share/awesome/themes/zenburn/theme.lua"
 
 layouts = {
    -- suit.floating,
