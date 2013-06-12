@@ -4,12 +4,12 @@ Thx for many others' configuration for awesome wm. It's my style for
 me, maybe you'll lovin it.
 
 # Screenshot [prestyle]
-![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot/s.png)
+![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot/s.jpg)
 
 # Screenshot [now]
-![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot/s2.png)
+![screenshot](https://raw.github.com/sylvester/meelua/master/screenshot/s2.jpg)
 
-Using this:
+# Using this:
 
 1. export LUA_PATH=<<THIS PROJECT DIRECTORY>>
 
