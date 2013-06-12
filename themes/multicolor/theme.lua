@@ -10,7 +10,6 @@ theme = {}
 
 local _,_,dirname=string.find(debug.getinfo(1, "S").source, [[^@(.*)/([^/]-)$]])
 theme.confdir = dirname
-theme.confdir="~/.config/awesome/meelua/themes/multicolor"
 
 theme.font = "Terminus 8"
 --theme.taglist_font =

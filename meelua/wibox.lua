@@ -35,7 +35,7 @@ gold = "<span color='#e7b400'>"
 local scriptdir = o.mee_home .. "/scripts"
 
 --{{---| MPD widget |-------------------------------------------------------------------------------
-local awesompd = require("meelua.awesompd.awesompd")
+local awesompd = require("awesompd.awesompd")
 musicwidget = awesompd:create() -- Create awesompd widget
 -- musicwidget.font = awesome.font
 musicwidget.scrolling = true -- If true, the text in the widget will be scrolled
