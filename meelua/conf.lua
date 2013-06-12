@@ -18,7 +18,7 @@ module(...)
 
 local _,_,dirname=string.find(debug.getinfo(1, "S").source, [[^@(.*)/([^/]-)$]])
 
-mee_home = dirname
+mee_home = awful.util.getdir("config")
 
 globalkeys = {}
 mpc = "ncmpcpp"
@@ -31,9 +31,9 @@ font = "Terminus 9"
 
 screenshots_dir = "~/personal/screenshots/"
 -- wallpaper = "/home/ryan/personal/wallpapers/november-11-a_clearing_in_the_foggy_forest__5-nocal-1280x800_duclear.jpg"
-wallpaper = awful.util.getdir("config") .. "/meelua/wallpaper"
+wallpaper = awful.util.getdir("config") .. "/wallpaper"
 -- theme = awful.util.getdir("config") .. "/themes/cool-blue/theme.lua"
-theme = awful.util.getdir("config") .. "/meelua/themes/multicolor/theme.lua"
+theme = awful.util.getdir("config") .. "/themes/multicolor/theme.lua"
 -- theme = "/usr/share/awesome/themes/zenburn/theme.lua"
 
 layouts = {
