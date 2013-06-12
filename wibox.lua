@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-06-12 00:00:17 ryan>
+-- Time-stamp: <2013-06-12 22:40:37 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -414,7 +414,7 @@ mynet:add(netupinfo)
 --{{---| Volume widget |-------------------------------------------------------------------------------
 
 local _volume = wibox.widget.textbox()
-local myvolume_v = vicious.register(_volume, vicious.widgets.volume,
+myvolume_v = vicious.register(_volume, vicious.widgets.volume,
       blue .. '♫ $1%' .. coldef, 10, "Master")
 local myvolume = wibox.layout.margin(_volume, 4)
 
