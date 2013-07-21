@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2013-07-21 22:46:25 ryan>
+-- Time-stamp: <2013-07-22 00:21:25 ryan>
 
 local awful = require("awful")
 local rules = require("awful.rules")
@@ -116,6 +116,14 @@ client.connect_signal("manage",
                          --                     end
                          --                  end)
 
+                        if c.name == o.mpc or c.name == o.mail
+                        then
+                          c:connect_signal("unmanage",
+                          function(c)
+                            awful.tag.history.restore()
+                          end)
+                        end
+
                          if not startup
                          then
                             -- Set the windows at the slave,
@@ -130,6 +138,15 @@ client.connect_signal("manage",
                                awful.placement.no_offscreen(c)
                             end
                          end
+                      end)
+
+local naughty = require("naughty")
+client.connect_signal("unmanage",
+                      function(c)
+                        if c.name and string.match(string.lower(c.name), o.mpc)
+                        then
+                          awful.tag.history.restore()
+                        end
                       end)
 
 client.connect_signal("focus",
