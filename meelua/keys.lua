@@ -1,6 +1,6 @@
 -- Author: Yudi Shi <a@sydi.org>
 -- Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-06-06 21:23:58 ryan>
+-- Time-stamp: <2013-07-21 22:51:17 ryan>
 
 local o = require("meelua.conf")
 local awful = require("awful")
@@ -70,7 +70,7 @@ globalkeys = awful.util.table.join(
 
    awful.key({ modkey, "Shift" }, "n", awful.client.restore),
 
-   
+
    -- start program
    awful.key({ modkey,           }, "Return", function () awful.util.spawn(o.terminal) end),
 
@@ -93,6 +93,12 @@ globalkeys = awful.util.table.join(
                 awful.util.spawn("scrot -s -e 'mv $f " .. o.screenshots_dir .. " 2>/dev/null'")
              end),
 
+   awful.key({modkey, }, "a", function ()
+                awful.util.spawn("sh -c 'cd ~ && ./a.out'")
+             end),
+   awful.key({modkey, "Control"}, "a", function ()
+                awful.util.spawn("sh -c 'killall a.out'")
+             end),
    -- screen saver
    awful.key({ modkey, }, "`", function () awful.util.spawn("xscreensaver-command -lock") end),
 
@@ -131,8 +137,9 @@ globalkeys = awful.util.table.join(
                 -- raise mpc_client if it's ran.
                 for k, c in pairs(client.get())
                 do
+                   if c.name == nil then goto continue end
                    local name = string.lower(c.name)
-                   if string.match(name, o.mpc_client)
+                   if string.match(name, o.mpc)
                    then
                       for i, v in ipairs(c:tags())
                       do
@@ -142,13 +149,41 @@ globalkeys = awful.util.table.join(
                          return
                       end
                    end
+                   ::continue::
                 end
                 -- if there's no mpc_client running, just run it.
-                awful.util.spawn(string.format("%s -e %s", terminal, o.mpc_client))
+                awful.util.spawn(string.format("%s -e %s", terminal, o.mpc))
+             end),
+
+   awful.key({ modkey,  "Control" }, "u",
+             function ()
+                -- raise mail client if it's ran.
+                for k, c in pairs(client.get())
+                do
+                   if c.name == nil then goto continue end
+                   local name = string.lower(c.name)
+                   if string.match(name, o.mail)
+                   then
+                      for i, v in ipairs(c:tags())
+                      do
+                         awful.tag.viewonly(v)
+                         c:raise()
+                         c.minimized = false
+                         return
+                      end
+                   end
+                   ::continue::
+                end
+                -- if there's no mail client running, just run it.
+                awful.util.spawn(string.format("%s -e %s", terminal, o.mail))
              end),
 
    -- move mouse to another screen
-   awful.key({ modkey,           }, "o",      function (c) awful.screen.focus_relative(1) end))
+   awful.key({ modkey,           }, "o",      function (c) awful.screen.focus_relative(1) end),
+
+   -- lookup dict
+   awful.key({ modkey,           }, "[",      function (c) awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end)
+   )
 
 clientkeys = awful.util.table.join(
    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
@@ -170,7 +205,12 @@ clientkeys = awful.util.table.join(
              function (c)
                 c.maximized_horizontal = not c.maximized_horizontal
                 c.maximized_vertical   = not c.maximized_vertical
-             end))
+             end),
+    awful.key({ modkey, }, "c",
+             function (c)
+                 awful.placement.centered(c)
+             end)
+             )
 
 local tags = require("meelua.tags")
 local screen = screen

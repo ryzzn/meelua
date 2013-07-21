@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2012-12-02 23:04:51 ryan>
+-- Time-stamp: <2013-07-21 22:45:38 ryan>
 -- About tags and layout configurations.
 
 local awful = require("awful")
@@ -19,6 +19,8 @@ local mytags = {
    { name = "7", layout = suit.floating },
    { name = "8", layout = suit.floating },
    { name = "9", layout = suit.floating },
+   { name = "mpc", layout = suit.max },
+   { name = "mail", layout = suit.max },
 }
 
 --- Create a set of tags and attach it to a screen.

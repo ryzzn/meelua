@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2013-06-07 18:42:27 ryan>
+-- Time-stamp: <2013-07-21 22:46:25 ryan>
 
 local awful = require("awful")
 local rules = require("awful.rules")
@@ -71,7 +71,8 @@ rules.rules = {
                     maximized_vertical = true,
                     maximized_horizontal = true}},
    { rule = { class = "AliWangWang" },
-     properties = { tag = tags[1][4] }},
+     properties = { tag = tags[1][4],
+                    opacity = 0.9 }},
    { rule = { class = "AliWangWang",
               name = "ScreenCapturePainter" },
      properties = { floating = true,
@@ -80,8 +81,12 @@ rules.rules = {
               name = "系统通知" },
      properties = { floating = true,
                     ontop = true, } },
-   { rule = { name = o.mpc_client },
-     properties = { tag = tags[1][10] }},
+   { rule = { name = o.mpc },
+     properties = { tag = tags[1][10],
+                    switchtotag = true}},
+   { rule = { name = o.mail },
+     properties = { tag = tags[1][11],
+                    switchtotag = true}},
    -- { rule = { name = "lyricshow" },
    --   properties = { opacity = 0 }},
    -- for chromium popups
