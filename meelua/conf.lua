@@ -22,11 +22,11 @@ mee_home = awful.util.getdir("config")
 
 globalkeys = {}
 mpc = "ncmpcpp"
+mail = "mutt"
 
 terminal = "urxvt +sb -is -bc -ic +tr -sh 80"
 editor = os.getenv("EDITOR") or "vim"
 
-mpc_client = "ncmpcpp"
 font = "Terminus 9"
 
 screenshots_dir = "~/personal/screenshots/"
