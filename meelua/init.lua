@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 22:49:42 ryan>
--- Time-stamp: <2013-10-13 00:18:08 ryan>
+-- Time-stamp: <2013-10-16 18:28:45 ryan>
 
 -- Standard awesome library
 local awful = require("awful")
@@ -16,7 +16,7 @@ require("meelua.wibox")
 require("meelua.client")
 
 naughty.notify = function (opts)
-   awful.util.spawn(string.format('twmnc -t "%s" -c "%s" -d %d --pos %s -i "%s" -s %d',
+   awful.util.spawn_with_shell(string.format('twmnc -t "%s" -c "%s" -d %d --pos %s -i "%s" -s %d',
                     opts.title, opts.text, opts.timeout * 1000, opts.position, opts.icon, opts.icon_size))
                  end
 
