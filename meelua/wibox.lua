@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-07-21 22:53:58 ryan>
+-- Time-stamp: <2013-07-27 08:55:45 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")
@@ -246,7 +246,7 @@ local function weather_format(w, args)
 end
 
 myweather = wibox.widget.textbox()
-vicious.register(myweather, vicious.widgets.wifi, weather_format, 10, "wlan0")
+-- vicious.register(myweather, vicious.widgets.wifi, weather_format, 10, "wlan0")
 
 
 --{{---| Battery widget |-------------------------------------------------------------------------------
