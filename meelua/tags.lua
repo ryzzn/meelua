@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-10-12 23:16:46 ryan>
+-- Time-stamp: <2013-10-16 18:30:03 ryan>
 -- About tags and layout configurations.
 
 local awful = require("awful")
@@ -61,7 +61,7 @@ screen[1]:connect_signal("tag::history::update",
                            local sel = tag.selected(1)
                            local name = sel.name
                            if not mywibox[mouse.screen].visible then
-                             awful.util.spawn('twmnc -t TAG -c "<' .. name .. '>" -s 30 --id 1543 -d 1000')
+                             awful.util.spawn_with_shell('twmnc -t TAG -c "<' .. name .. '>" -s 30 --id 1543 -d 1000')
                            end
                          end)
 

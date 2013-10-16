@@ -1,6 +1,6 @@
 -- Author: Yudi Shi <a@sydi.org>
 -- Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-07-21 22:51:17 ryan>
+-- Time-stamp: <2013-10-16 18:31:38 ryan>
 
 local o = require("meelua.conf")
 local awful = require("awful")
@@ -86,21 +86,15 @@ globalkeys = awful.util.table.join(
    -- take screenshot
    awful.key({modkey, }, "s", false,
              function ()
-                awful.util.spawn("scrot -e 'mv $f " .. o.screenshots_dir .. " 2>/dev/null'")
+                awful.util.spawn_with_shell("scrot -e 'mv $f " .. o.screenshots_dir .. " 2>/dev/null'")
              end),
    awful.key({modkey, "Control"}, "s", false,
              function ()
-                awful.util.spawn("scrot -s -e 'mv $f " .. o.screenshots_dir .. " 2>/dev/null'")
+                awful.util.spawn_with_shell("scrot -s -e 'mv $f " .. o.screenshots_dir .. " 2>/dev/null'")
              end),
 
-   awful.key({modkey, }, "a", function ()
-                awful.util.spawn("sh -c 'cd ~ && ./a.out'")
-             end),
-   awful.key({modkey, "Control"}, "a", function ()
-                awful.util.spawn("sh -c 'killall a.out'")
-             end),
    -- screen saver
-   awful.key({ modkey, }, "`", function () awful.util.spawn("xscreensaver-command -lock") end),
+   awful.key({ modkey, }, "`", function () awful.util.spawn_with_shell("xscreensaver-command -lock") end),
 
    -- audio sound control
    awful.key({}, "XF86AudioRaiseVolume", function () io.popen("amixer sset Master 5+"):close() myvolume_v.update() end),
