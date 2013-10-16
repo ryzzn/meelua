@@ -1,6 +1,6 @@
 -- Author: Yudi Shi <a@sydi.org>
 -- Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-10-16 18:31:38 ryan>
+-- Time-stamp: <2013-10-16 19:14:41 ryan>
 
 local o = require("meelua.conf")
 local awful = require("awful")
@@ -173,10 +173,13 @@ globalkeys = awful.util.table.join(
              end),
 
    -- move mouse to another screen
-   awful.key({ modkey,           }, "o",      function (c) awful.screen.focus_relative(1) end),
+   awful.key({ modkey,           }, "o",      function () awful.screen.focus_relative(1) end),
 
    -- lookup dict
-   awful.key({ modkey,           }, "[",      function (c) awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end)
+   awful.key({ modkey,           }, "[",      function () awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end),
+
+   -- extrac WW messages and switch to that tag
+   awful.key({ "Mod1",         }, "m",      function () awful.tag.viewonly(tags[1][4]) end)
    )
 
 clientkeys = awful.util.table.join(
