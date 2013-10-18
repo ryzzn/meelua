@@ -24,7 +24,7 @@ globalkeys = {}
 mpc = "ncmpcpp"
 mail = "mutt"
 
-terminal = "urxvt +sb -is -bc -ic +tr -sh 80"
+terminal = "urxvtc +sb -is -bc -ic +tr -sh 80"
 editor = os.getenv("EDITOR") or "vim"
 
 font = "Terminus 9"
