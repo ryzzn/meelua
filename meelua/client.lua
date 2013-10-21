@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2013-07-22 00:21:25 ryan>
+-- Time-stamp: <2013-10-21 10:55:37 ryan>
 
 local awful = require("awful")
 local rules = require("awful.rules")
@@ -81,6 +81,9 @@ rules.rules = {
               name = "系统通知" },
      properties = { floating = true,
                     ontop = true, } },
+   { rule = { class= "Docky",
+              name = "Docky"},
+     properties = { ontop = true } },
    { rule = { name = o.mpc },
      properties = { tag = tags[1][10],
                     switchtotag = true}},
