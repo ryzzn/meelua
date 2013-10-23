@@ -1,6 +1,6 @@
 -- Author: Yudi Shi <a@sydi.org>
 -- Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-10-16 19:18:50 ryan>
+-- Time-stamp: <2013-10-23 16:40:37 ryan>
 
 local o = require("meelua.conf")
 local awful = require("awful")
@@ -26,6 +26,10 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey,           }, "Right", awful.tag.viewnext        ),
    awful.key({ modkey,           }, "'", awful.tag.viewnext        ),
    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+   awful.key({ modkey,           }, "i",
+             function ()
+                      instance = awful.menu.clients({ width=250 })
+                end),
 
    awful.key({ modkey,           }, "j",
              function ()
