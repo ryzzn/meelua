@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:32:21 ryan>
--- Time-stamp: <2013-07-27 08:55:45 ryan>
+-- Time-stamp: <2013-10-23 16:31:15 ryan>
 
 local wibox = require("wibox")
 local awful = require("awful")

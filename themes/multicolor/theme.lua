@@ -51,6 +51,36 @@ theme.menu_bg_normal = "#050505dd"
 theme.menu_bg_focus  = "#050505dd"
 theme.menu_submenu_icon  = theme.confdir .. "/submenu.png"
 
+-- {{{ Titlebars
+theme.titlebar_bg_focus  = "#3F3F3F"
+theme.titlebar_bg_normal = "#3F3F3F"
+-- }}}
+
+-- {{{ Titlebar
+theme.titlebar_close_button_focus  = theme.confdir .. "/titlebar/close_focus.png"
+theme.titlebar_close_button_normal = theme.confdir .. "/titlebar/close_normal.png"
+
+theme.titlebar_ontop_button_focus_active  = theme.confdir .. "/titlebar/ontop_focus_active.png"
+theme.titlebar_ontop_button_normal_active = theme.confdir .. "/titlebar/ontop_normal_active.png"
+theme.titlebar_ontop_button_focus_inactive  = theme.confdir .. "/titlebar/ontop_focus_inactive.png"
+theme.titlebar_ontop_button_normal_inactive = theme.confdir .. "/titlebar/ontop_normal_inactive.png"
+
+theme.titlebar_sticky_button_focus_active  = theme.confdir .. "/titlebar/sticky_focus_active.png"
+theme.titlebar_sticky_button_normal_active = theme.confdir .. "/titlebar/sticky_normal_active.png"
+theme.titlebar_sticky_button_focus_inactive  = theme.confdir .. "/titlebar/sticky_focus_inactive.png"
+theme.titlebar_sticky_button_normal_inactive = theme.confdir .. "/titlebar/sticky_normal_inactive.png"
+
+theme.titlebar_floating_button_focus_active  = theme.confdir .. "/titlebar/floating_focus_active.png"
+theme.titlebar_floating_button_normal_active = theme.confdir .. "/titlebar/floating_normal_active.png"
+theme.titlebar_floating_button_focus_inactive  = theme.confdir .. "/titlebar/floating_focus_inactive.png"
+theme.titlebar_floating_button_normal_inactive = theme.confdir .. "/titlebar/floating_normal_inactive.png"
+
+theme.titlebar_maximized_button_focus_active  = theme.confdir .. "/titlebar/maximized_focus_active.png"
+theme.titlebar_maximized_button_normal_active = theme.confdir .. "/titlebar/maximized_normal_active.png"
+theme.titlebar_maximized_button_focus_inactive  = theme.confdir .. "/titlebar/maximized_focus_inactive.png"
+theme.titlebar_maximized_button_normal_inactive = theme.confdir .. "/titlebar/maximized_normal_inactive.png"
+-- }}}
+
 theme.widget_temp       = theme.confdir .. "/widgets/temp.png"
 theme.widget_uptime      = theme.confdir .. "/widgets/ac.png"
 theme.widget_cpu        = theme.confdir .. "/widgets/cpu.png"
