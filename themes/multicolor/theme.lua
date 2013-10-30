@@ -38,13 +38,13 @@ theme.fg_cyan       = "#778baf"
 theme.fg_white      = "#aaaaaa"
 theme.fg_blu        = "#8ebdde"
 
-theme.border_width  = "1"
+theme.border_width  = 1
 theme.border_normal = "#1c2022"
 theme.border_focus  = "#606060"
 theme.border_marked = "#3ca4d8"
 
-theme.menu_width = "110"
-theme.menu_border_width  = "0"
+theme.menu_width = 110
+theme.menu_border_width  = 0
 theme.menu_fg_normal = "#aaaaaa"
 theme.menu_fg_focus =  "#ff8c00"
 theme.menu_bg_normal = "#050505dd"

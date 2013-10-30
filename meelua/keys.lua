@@ -1,6 +1,6 @@
 -- Author: Yudi Shi <a@sydi.org>
 -- Create: <2012-12-02 14:10:25 ryan>
--- Time-stamp: <2013-10-23 16:40:37 ryan>
+-- Time-stamp: <2013-10-29 15:23:19 ryan>
 
 local o = require("meelua.conf")
 local awful = require("awful")
@@ -173,7 +173,7 @@ globalkeys = awful.util.table.join(
                    ::continue::
                 end
                 -- if there's no mail client running, just run it.
-                awful.util.spawn(string.format("%s -e %s", terminal, o.mail))
+                awful.util.spawn(string.format("%s -e %s", terminal, o.mail))                
              end),
 
    -- move mouse to another screen
