@@ -21,10 +21,10 @@ local _,_,dirname=string.find(debug.getinfo(1, "S").source, [[^@(.*)/([^/]-)$]])
 mee_home = awful.util.getdir("config")
 
 globalkeys = {}
+terminal = "urxvtc +sb -is -bc -ic +tr -sh 80"
 mpc = "ncmpcpp"
 mail = "mutt"
 
-terminal = "urxvtc +sb -is -bc -ic +tr -sh 80"
 editor = os.getenv("EDITOR") or "vim"
 
 font = "Terminus 9"
