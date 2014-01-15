@@ -88,7 +88,7 @@ rules.rules = {
    { rule = { name = o.mpc },
      properties = { tag = tags[1][10],
                     switchtotag = true}},
-   { rule = { name = o.mail },
+   { rule = { name = "^" .. o.mail .. "$"},
      properties = { tag = tags[1][11],
                     switchtotag = true}},
    -- { rule = { name = "lyricshow" },
@@ -207,4 +207,3 @@ client.connect_signal("unfocus",
                          -- c.opacity = 0.7
                       end)
 -- }}}
-
