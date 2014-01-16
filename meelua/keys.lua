@@ -180,7 +180,7 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey,           }, "o",      function () awful.screen.focus_relative(1) end),
 
    -- lookup dict
-   awful.key({ modkey,           }, "[",      function () awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end),
+   awful.key({ modkey,           }, "[",      function () awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end)
    )
 
 clientkeys = awful.util.table.join(
