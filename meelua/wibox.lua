@@ -361,7 +361,7 @@ fshwidget = wibox.widget.textbox()
 local infos = nil
 
 function remove_info()
-    if infos ~= nil then 
+    if infos ~= nil then
         naughty.destroy(infos)
         infos = nil
     end
@@ -488,8 +488,7 @@ mytasklist.buttons = awful.util.table.join(
                    if client.focus then client.focus:raise() end
                 end))
 
-screen_cnt = 1;              -- screen.count()
-for s = 1, screen_cnt
+for s = 1, screen.count()
 do
    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
    -- We need one layoutbox per screen.
@@ -514,7 +513,7 @@ do
    local left_layout = wibox.layout.fixed.horizontal()
    -- left_layout:add(mylauncher)
    left_layout:add(mytaglist[s])
-   left_layout:add(musicwidget.widget)
+   if s == 1 then left_layout:add(musicwidget.widget) end
    -- left_layout:add(mypromptbox[s])
 
    -- Widgets that are aligned to the right
@@ -538,8 +537,10 @@ do
    -- Now bring it all together (with the tasklist in the middle)
    local top_layout = wibox.layout.align.horizontal()
    top_layout:set_left(left_layout)
-   top_layout:set_middle(mytasklist[s])
-   top_layout:set_right(right_layout)
+   if s == 1 then
+     top_layout:set_middle(mytasklist[s])
+     top_layout:set_right(right_layout)
+   end
 
    mywibox[s]:set_widget(top_layout)
 end
