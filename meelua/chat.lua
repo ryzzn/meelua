@@ -59,7 +59,7 @@ local function chat(p, place)
             if ( place == "right" ) then
                if string.find(c.name, "^阿里旺旺 - ")
                then
-                  g.x = wa.width - wa.width / 4
+                  g.x = wa.x + wa.width - wa.width / 4
                   g.y = wa.y
                   g.width = wa.width / 4
                   g.height = wa.height
