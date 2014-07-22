@@ -43,7 +43,7 @@ theme.border_normal = "#1c2022"
 theme.border_focus  = "#606060"
 theme.border_marked = "#3ca4d8"
 
-theme.menu_width = 110
+theme.menu_width = 350
 theme.menu_border_width  = 0
 theme.menu_fg_normal = "#aaaaaa"
 theme.menu_fg_focus =  "#ff8c00"
@@ -52,7 +52,7 @@ theme.menu_bg_focus  = "#050505dd"
 theme.menu_submenu_icon  = theme.confdir .. "/submenu.png"
 
 -- {{{ Titlebars
-theme.titlebar_bg_focus  = "#3F3F3F"
+theme.titlebar_bg_focus  = "#2F4F4F"
 theme.titlebar_bg_normal = "#3F3F3F"
 -- }}}
 
@@ -98,7 +98,7 @@ theme.taglist_squares_unsel = theme.confdir .. "/taglist/square_b.png"
 
 theme.tasklist_floating = ""
 theme.tasklist_maximized_horizontal = ""
-theme.tasklist_maximized_vertical = "" 
+theme.tasklist_maximized_vertical = ""
 
 theme.layout_tile       = theme.confdir .. "/layouts/tile.png"
 theme.layout_tileleft   = theme.confdir .. "/layouts/tileleft.png"
@@ -113,7 +113,7 @@ theme.layout_fullscreen = theme.confdir .. "/layouts/fullscreen.png"
 theme.layout_magnifier  = theme.confdir .. "/layouts/magnifier.png"
 theme.layout_floating   = theme.confdir .. "/layouts/floating.png"
 
---theme.awesome_icon = 
+--theme.awesome_icon =
 theme.wallpaper = theme.confdir .. "/wall.png"
 
 return theme

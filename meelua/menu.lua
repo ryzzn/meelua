@@ -4,11 +4,12 @@
 local awful = require("awful")
 
 -- Redefined Menu keys binding.
--- awful.menu.menu_keys = { up = { "Up", "k"},
---                          down = { "Down", "j"},
---                          exec = { "Return", "Right", "l" },
---                          back = { "Left", "h"},
---                          close = { "Escape", "q" } }
+awful.menu.menu_keys = { up = { "Up", "k"},
+                         down = { "Down", "j"},
+                         exec = { "Return", "Right", "l" },
+                         back = { "Left", "h"},
+                         enter = { "Return" },
+                         close = { "Escape", "q" } }
 
 -- -- Create a laucher widget and a main menu
 -- myawesomemenu = {
