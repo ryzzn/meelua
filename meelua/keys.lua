@@ -28,7 +28,7 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
    awful.key({ modkey,           }, "i",
              function ()
-                      instance = awful.menu.clients({ width=250 })
+                      instance = awful.menu.clients({ auto_expand=true,width=400 })
                 end),
 
    awful.key({ modkey,           }, "j",

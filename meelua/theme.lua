@@ -25,6 +25,7 @@ beautiful.init(mytheme.theme)
 beautiful.get().font = mytheme.font
 mytheme.confdir = beautiful.get().confdir
 beautiful["layout_chatright"] = o.mee_home .. "/pic/wangwang.png"
+beautiful["layout_chatleft"] = o.mee_home .. "/pic/wangwang.png"
 beautiful["icon_battery"] = o.mee_home .. "/pic/icon_battery.png"
 beautiful["icon_net"] = o.mee_home .. "/pic/icon_net.png"
 

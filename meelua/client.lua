@@ -67,10 +67,16 @@ rules.rules = {
                     floating = true,
                     callback = function (c) awful.placement.centered(c) end } },
    { rule = { class = "Chromium",
-              type = "normal" },
+              type = "normal",
+              role = "browser" },
      properties = { tag = tags[1][3],
                     maximized_vertical = true,
                     maximized_horizontal = true}},
+   { rule = { class = "Chromium",
+              role = "app" },
+     properties = { floating = true,
+                    ontop = true,
+                    tag = tags[1][3] }},
    { rule = { class = "AliWangWang" },
      properties = { tag = tags[1][4],
                     opacity = 0.9 }},
@@ -130,6 +136,7 @@ client.connect_signal("manage", function (c, startup)
     end
 
     local titlebars_enabled = (c.class == "AliWangWang")
+    if titlebars_enabled then c.border_width = 2 end
     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
         -- buttons for the titlebar
         local buttons = awful.util.table.join(
@@ -193,7 +200,7 @@ client.connect_signal("unmanage",
 
 client.connect_signal("focus",
                       function(c)
-                         if c.class and string.match(c.class, "URxvt")
+                         if c.class and (string.match(c.class, "URxvt") or c.class == "AliWangWang")
                          then
                             c.border_color = theme.border_high_focus
                          else

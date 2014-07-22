@@ -14,6 +14,7 @@ require("meelua.tags")
 require("meelua.keys")
 require("meelua.wibox")
 require("meelua.client")
+require("meelua.menu")
 
 naughty.notify = function (opts)
    awful.util.spawn_with_shell(string.format('twmnc -t "%s" -c "%s" -d %d --pos %s -i "%s" -s %d',
