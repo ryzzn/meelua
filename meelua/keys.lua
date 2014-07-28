@@ -5,6 +5,7 @@
 local o = require("meelua.conf")
 local awful = require("awful")
 local menubar = require("menubar")
+local naughty = require("naughty")
 local root = root
 
 -- Default modkey.
@@ -69,8 +70,8 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
 
-   awful.key({ modkey,           }, "space", function () awful.layout.inc(o.layouts,  1) end),
-   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(o.layouts, -1) end),
+   awful.key({ modkey,           }, "space", function () awful.layout.inc( 1, mouse.screen, o.layouts) end),
+   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1, mouse.screen, o.layouts) end),
 
    awful.key({ modkey, "Shift" }, "n", awful.client.restore),
 
@@ -177,7 +178,10 @@ globalkeys = awful.util.table.join(
              end),
 
    -- move mouse to another screen
-   awful.key({ modkey,           }, "o",      function () awful.screen.focus_relative(1) end),
+   awful.key({ modkey,           }, "o",
+     function ()
+       awful.screen.focus_relative(1)
+       end),
 
    -- lookup dict
    awful.key({ modkey,           }, "[",      function () awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end)
