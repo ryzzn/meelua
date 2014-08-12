@@ -38,6 +38,7 @@ local function chat(p, place)
       local width = wa.width * 3 / (4 * cs)
       for k, c in ipairs(cls) do
          local g = {}
+         local border = c.border_width
          if (c.class == "AliWangWang")
          then
             if ( place == "left" )  then
@@ -45,14 +46,14 @@ local function chat(p, place)
                then
                   g.x = wa.x
                   g.y = wa.y
-                  g.width = wa.width / 4
-                  g.height = wa.height
+                  g.width = wa.width / 4 - 2 * border
+                  g.height = wa.height - 2 * border
                elseif string.find(c.name,  " (.*)$")
                then
                   g.x = wa.width / 4 + cell * width
                   g.y = wa.y
-                  g.width = width
-                  g.height = height
+                  g.width = width - 2 * border
+                  g.height = height - 2 * border
                   cell = cell + 1
                end
             end
@@ -61,14 +62,14 @@ local function chat(p, place)
                then
                   g.x = wa.x + wa.width - wa.width / 4
                   g.y = wa.y
-                  g.width = wa.width / 4
-                  g.height = wa.height
+                  g.width = wa.width / 4 - 2 * border
+                  g.height = wa.height - 2 * border
                elseif string.find(c.name,  " (.*)$")
                then
                   g.x = wa.x + cell * width
                   g.y = wa.y
-                  g.width = width
-                  g.height = height
+                  g.width = width - 2 * border
+                  g.height = height - 2 * border
                   cell = cell + 1
                end
             end
