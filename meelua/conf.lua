@@ -21,7 +21,7 @@ local _,_,dirname=string.find(debug.getinfo(1, "S").source, [[^@(.*)/([^/]-)$]])
 mee_home = awful.util.getdir("config")
 
 globalkeys = {}
-terminal = "urxvtc +sb -is -bc -ic +tr -sh 80"
+terminal = "urxvtc +sb -bc -ic +tr -sh 80"
 mpc = "ncmpcpp"
 mail = "mutt"
 
@@ -30,7 +30,7 @@ editor = os.getenv("EDITOR") or "vim"
 font = "Terminus 9"
 
 screenshots_dir = "~/personal/screenshots/"
-wallpaper = awful.util.getdir("config") .. "/wallpaper.jpg"
+wallpaper = awful.util.getdir("config") .. "/wallpaper.png"
 theme = awful.util.getdir("config") .. "/themes/multicolor/theme.lua"
 
 layouts = {
