@@ -4,3 +4,6 @@
 [submodule "awesompd"]
 	path = awesompd
 	url = git://github.com/alexander-yakushev/awesompd
+[submodule "lain"]
+	path = lain
+	url = https://github.com/copycat-killer/lain.git
