@@ -11,7 +11,7 @@ local screen = screen;
 local naughty = require("naughty")
 
 local mytags = {
-   { name = "Term", layout = suit.tile.bottom },
+   { name = "Term", layout = suit.tile.right },
    { name = "Emacs", layout = suit.max },
    { name = "Web", layout = suit.max },
    { name = "WW", layout = chat.right },
