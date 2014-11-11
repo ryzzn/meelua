@@ -6,12 +6,13 @@ awful = require("awful")
 theme = {}
 
 local _,_,dirname=string.find(debug.getinfo(1, "S").source, [[^@(.*)/([^/]-)$]])
+theme.confdir = dirname
 themedir = dirname
 --}}}
 
 --/// Styles
 
-theme.font      = "Terminus 9"
+theme.font      = "Terminus 10"
 
 --// Colors
 theme.fg_normal = "#808080"
@@ -104,4 +105,3 @@ theme.titlebar_maximized_button_normal_inactive = themedir .. "/maximize-unfocus
 --////
 
 return theme
-
