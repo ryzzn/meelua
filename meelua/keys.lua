@@ -72,6 +72,17 @@ globalkeys = awful.util.table.join(
 
    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1, mouse.screen, o.layouts) end),
    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1, mouse.screen, o.layouts) end),
+   -- switch between floating layout and the others
+   awful.key({ modkey, "Control"   }, "space",
+             function ()
+               local layout = awful.layout
+               local suit = layout.suit
+               if layout.get(mouse.screen) == suit.floating then
+                 layout.set(suit.tile.right)
+               else
+                 layout.set(suit.floating)
+               end
+             end),
 
    awful.key({ modkey, "Shift" }, "n", awful.client.restore),
 
