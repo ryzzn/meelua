@@ -14,6 +14,9 @@ local o = require("meelua.conf")
 local u = require("meelua.util")
 local beautiful = require("beautiful")
 local json = require("json")    -- not installed by default in lua 5.2
+local lain = require("lain")
+
+terminal = o.terminal
 
 -- Colours
 coldef  = "</span>"
@@ -413,10 +416,26 @@ mynet:add(netupinfo)
 
 --{{---| Volume widget |-------------------------------------------------------------------------------
 
-local _volume = wibox.widget.textbox()
-myvolume_v = vicious.register(_volume, vicious.widgets.volume,
-      blue .. '♫ $1%' .. coldef, 10, "Master")
-local myvolume = wibox.layout.margin(_volume, 4)
+-- ALSA volume bar
+local _volumebar = lain.widgets.alsabar({
+    ticks  = true,
+    width  = 80,
+    height = 10,
+    channel = "Master",
+    colors = {
+        background = "#383838",
+        unmute     = "#80CCE6",
+        mute       = "#FF9F9F"
+    },
+    notifications = {
+        font      = "Tamsyn",
+        font_size = "12",
+        bar_size  = 32
+    }
+})
+local myvolume = wibox.layout.margin(_volumebar.bar, 5, 8)
+wibox.layout.margin.set_top(myvolume, 4)
+wibox.layout.margin.set_bottom(myvolume, 4)
 
 --{{---| Mail widget |-------------------------------------------------------------------------------
 
@@ -502,11 +521,10 @@ do
    -- Create a tasklist widget
    mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
    -- Create a taglist widget
-   -- mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, mytaglist.buttons)
    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, mytaglist.buttons)
 
    -- Create the wibox
-   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.8, height=16 })
+   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.9, height=20, border_width = 0 })
    mywibox[s].visible = true
 
    -- Widgets that are aligned to the left
