@@ -7,7 +7,7 @@ local awful = require("awful")
 local chat = require("meelua.chat")
 local tag = require("awful.tag")
 local suit = awful.layout.suit
-local screen = screen;
+local screen = screen
 local naughty = require("naughty")
 
 local mytags = {

@@ -11,7 +11,7 @@ local o = require("meelua.conf")
 
 mytheme = {
    theme = o.theme,
-   wallpaper = o.wallpaper,
+   wallpaper = nil,
    font = o.font,
    border_width  = 0,
    border_normal = "#3F3F3F",
@@ -30,11 +30,13 @@ beautiful["icon_battery"] = o.mee_home .. "/pic/icon_battery.png"
 beautiful["icon_net"] = o.mee_home .. "/pic/icon_net.png"
 
 -- {{{ Wallpaper
-if mytheme.wallpaper
+local wallpaper = mytheme.wallpaper
+wallpaper = wallpaper or beautiful.wallpaper
+if wallpaper
 then
    for s = 1, screen.count()
    do
-      gears.wallpaper.maximized(mytheme.wallpaper, s, true)
+      gears.wallpaper.maximized(wallpaper, s, true)
    end
 end
 -- }}}
