@@ -59,24 +59,24 @@ rules.rules = {
    { rule = { class = "gimp" },
      properties = { floating = true } },
    { rule = { class = "Emacs" },
-     properties = { tag = tags[1][2],
+     properties = { tag = tags[2][2],
                     switchtotag = true}},
    { rule = { class = "Chromium",
               type = "dialog" },
-     properties = { tag = tags[1][3],
+     properties = { tag = tags[2][3],
                     floating = true,
                     callback = function (c) awful.placement.centered(c) end } },
    { rule = { class = "Chromium",
               type = "normal",
               role = "browser" },
-     properties = { tag = tags[1][3],
+     properties = { tag = tags[2][3],
                     maximized_vertical = true,
                     maximized_horizontal = true}},
    { rule = { class = "Chromium",
               role = "app" },
      properties = { floating = true,
                     ontop = true,
-                    tag = tags[1][3] }},
+                    tag = tags[2][3] }},
    { rule = { class = "AliWangWang" },
      properties = { tag = tags[1][4],
                     opacity = 0.95 }},
@@ -115,14 +115,6 @@ rules.rules = {
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
-    c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
-
     if not startup then
         -- Set the windows at the slave,
         -- i.e. put it at the end of others instead of setting it master.
@@ -133,6 +125,9 @@ client.connect_signal("manage", function (c, startup)
             awful.placement.no_overlap(c)
             awful.placement.no_offscreen(c)
         end
+    elseif not c.size_hints.user_position and not c.size_hints.program_position then
+        -- Prevent clients from being unreachable after screen count change
+        awful.placement.no_offscreen(c)
     end
 
     local titlebars_enabled = (c.class == "AliWangWang")
@@ -185,18 +180,25 @@ client.connect_signal("manage", function (c, startup)
     then
       c:connect_signal("unmanage",
       function(c)
-        awful.tag.history.restore()
+          if mouse.screen == c.screen then
+              awful.tag.history.restore()
+          else
+              old_screen = mouse.screen
+              mouse.screen = c.screen
+              awful.tag.history.restore()
+              mouse.screen = old_screen
+          end
       end)
     end
 end)
 
-client.connect_signal("unmanage",
-                      function(c)
-                        if c.name and string.match(string.lower(c.name), o.mpc)
-                        then
-                          awful.tag.history.restore()
-                        end
-                      end)
+-- Enable sloppy focus
+client.connect_signal("mouse::enter", function(c)
+    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+        and awful.client.focus.filter(c) then
+        client.focus = c
+    end
+end)
 
 client.connect_signal("focus",
                       function(c)

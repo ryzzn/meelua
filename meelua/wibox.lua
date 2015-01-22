@@ -488,13 +488,14 @@ mytasklist.buttons = awful.util.table.join(
                 end),
    awful.button({ }, 3,
                 function ()
-                   if instance
-                   then
-                      instance:hide()
-                      instance = nil
-                   else
-                      instance = awful.menu.clients({ width=250 })
-                   end
+                    if instance then
+                        instance:hide()
+                        instance = nil
+                    else
+                        instance = awful.menu.clients(
+                            {theme = { width =250 }
+                        })
+                    end
                 end),
    awful.button({ }, 4,
                 function ()
@@ -524,7 +525,7 @@ do
    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, mytaglist.buttons)
 
    -- Create the wibox
-   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=0.9, height=20, border_width = 0 })
+   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=1, height=20, border_width = 0 })
    mywibox[s].visible = true
 
    -- Widgets that are aligned to the left
@@ -555,8 +556,8 @@ do
    -- Now bring it all together (with the tasklist in the middle)
    local top_layout = wibox.layout.align.horizontal()
    top_layout:set_left(left_layout)
+   top_layout:set_middle(mytasklist[s])
    if s == 1 then
-     top_layout:set_middle(mytasklist[s])
      top_layout:set_right(right_layout)
    end
 

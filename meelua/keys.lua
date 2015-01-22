@@ -70,8 +70,8 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
 
-   awful.key({ modkey,           }, "space", function () awful.layout.inc( 1, mouse.screen, o.layouts) end),
-   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1, mouse.screen, o.layouts) end),
+   awful.key({ modkey,           }, "space", function () awful.layout.inc( 1) end),
+   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end),
    -- switch between floating layout and the others
    awful.key({ modkey, "Control"   }, "space",
              function ()
@@ -192,7 +192,7 @@ globalkeys = awful.util.table.join(
    awful.key({ modkey,           }, "o",
      function ()
        awful.screen.focus_relative(1)
-       end),
+     end),
 
    -- lookup dict
    awful.key({ modkey,           }, "[",      function () awful.util.spawn("bash -c 'notify-send \"$(udict.pl $(xsel -po))\"'") end)
@@ -203,10 +203,7 @@ clientkeys = awful.util.table.join(
    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-   awful.key({ modkey, "Shift"   }, "o",      function (c)
-                c.screen = awful.util.cycle(screen.count(), mouse.screen + 1)
-                awful.screen.focus(c.screen)
-                                              end),
+   awful.key({ modkey, "Shift"   }, "o",      awful.client.movetoscreen                        ),
    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
    awful.key({ modkey,           }, "n",
              function (c)

@@ -33,7 +33,7 @@ screenshots_dir = "~/personal/screenshots/"
 wallpaper = awful.util.getdir("config") .. "/wallpaper.png"
 theme = awful.util.getdir("config") .. "/themes/multicolor/theme.lua"
 
-layouts = {
+awful.layout.layouts = {
    -- suit.floating,
    suit.tile.bottom,
    suit.tile.right,
