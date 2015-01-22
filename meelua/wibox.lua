@@ -311,8 +311,7 @@ vicious.register(_bat, vicious.widgets.bat,
 local mybat = wibox.layout.margin(mybat, 0, 0)
 
 -- CPU widget
-cpuicon = wibox.widget.imagebox()
-cpuicon:set_image(beautiful.widget_cpu)
+cpuicon = wibox.widget.imagebox(beautiful.widget_cpu)
 cpuwidget = wibox.widget.textbox()
 vicious.register(cpuwidget, vicious.widgets.cpu, purple .. "$1%" .. coldef, 3)
 cpuicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(tasks, false) end)))
@@ -452,7 +451,6 @@ mymdir:add(_mdir_tome)
 mymdir = wibox.layout.margin(mymdir, 4)
 
 -- Create a wibox for each screen and add it
-mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
@@ -507,7 +505,8 @@ mytasklist.buttons = awful.util.table.join(
                    awful.client.focus.byidx(-1)
                    if client.focus then client.focus:raise() end
                 end))
-
+mywibox = {}
+myline = {}
 for s = 1, screen.count()
 do
    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -525,7 +524,7 @@ do
    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.noempty, mytaglist.buttons)
 
    -- Create the wibox
-   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=1, height=20, border_width = 0 })
+   mywibox[s] = awful.wibox({ position = "top", screen = s, opacity=1, height=23, border_width = 0 })
    mywibox[s].visible = true
 
    -- Widgets that are aligned to the left
@@ -561,6 +560,15 @@ do
      top_layout:set_right(right_layout)
    end
 
-   mywibox[s]:set_widget(top_layout)
+   local topline_layout = wibox.layout.flex.horizontal();
+   myline[s] = awful.widget.progressbar({height=3})
+   myline[s]:set_background_color("#00aa00aa")
+   topline_layout:add(myline[s])
+   local wibox_layout = wibox.layout.fixed.vertical();
+
+   wibox_layout:add(topline_layout)
+   wibox_layout:add(top_layout)
+
+   mywibox[s]:set_widget(wibox_layout)
 end
 -- }}}
