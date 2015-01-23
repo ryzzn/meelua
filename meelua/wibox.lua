@@ -563,6 +563,9 @@ do
    local topline_layout = wibox.layout.flex.horizontal();
    myline[s] = awful.widget.progressbar({height=3})
    myline[s]:set_background_color("#00aa00aa")
+   myline[s].focus = function (line) line:set_background_color("#000000aa") end
+   myline[s].unfocus = function (line) line:set_background_color("#333333") end
+
    topline_layout:add(myline[s])
    local wibox_layout = wibox.layout.fixed.vertical();
 

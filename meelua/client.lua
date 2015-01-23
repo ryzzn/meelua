@@ -208,11 +208,15 @@ client.connect_signal("focus",
                          else
                             c.border_color = theme.border_focus
                          end
+                         myline[c.screen]:focus()
+                         awful.screen.focus(c.screen)
                          -- c.opacity = 0.7
                       end)
+
 client.connect_signal("unfocus",
                       function(c)
                          c.border_color = theme.border_normal
+                         myline[c.screen]:unfocus()
                          -- c.opacity = 0.7
                       end)
 -- }}}
