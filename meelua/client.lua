@@ -1,6 +1,6 @@
 --     Author: Yudi Shi <a@sydi.org>
 --     Create: <2012-12-02 18:54:43 ryan>
--- Time-stamp: <2013-10-23 17:23:20 ryan>
+-- Time-stamp: <2015-01-27 00:50:46 ryan>
 
 local awful = require("awful")
 local wibox = require("wibox")
@@ -12,7 +12,6 @@ local client = client
 -- auto focus
 require("awful.autofocus")
 
-
 clientbuttons = awful.util.table.join(
    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
    awful.button({ modkey }, 1, awful.mouse.client.move),
@@ -22,7 +21,8 @@ clientbuttons = awful.util.table.join(
 rules.rules = {
    -- All clients will match this rule.
    { rule = { },
-     properties = { border_width = theme.border_width,
+     properties = {
+        border_width = theme.border_width,
         border_color = theme.border_normal,
         focus = awful.client.focus.filter,
         keys = clientkeys,
@@ -48,12 +48,6 @@ rules.rules = {
                     border_width = 0,
                     keys = nil,
                     buttons = nil} },
-   { rule = { class = "Pidgin" },
-     properties = { floating = false,
-                    tag = tags[1][5],} },
-   { rule = { class = "Openfetion" },
-     properties = { floating = true,
-                    tag = tags[1][4],} },
    { rule = { class = "pinentry" },
      properties = { floating = true } },
    { rule = { class = "gimp" },
@@ -92,23 +86,11 @@ rules.rules = {
               name = "Docky"},
      properties = { ontop = true } },
    { rule = { name = o.mpc },
-     properties = { tag = tags[1][10],
+     properties = { tag = tags.mpc,
                     switchtotag = true}},
    { rule = { name = "^" .. o.mail .. "$"},
-     properties = { tag = tags[1][11],
+     properties = { tag = tags.mail,
                     switchtotag = true}},
-   -- { rule = { name = "lyricshow" },
-   --   properties = { opacity = 0 }},
-   -- for chromium popups
-   { rule = { instance = "exe" },
-     properties = { floating = true } },
-   -- { rule = { class = "Mail" },
-   --   properties = { tag = tags[1][4],
-   --                  maximazied_vertical = true,
-   --      	    maximazied_horizontal = true}},
-   -- { rule = { class = "Mail" },
-   --   properties = { tag = tags[1][5],
-   --                  floating = true}},
 }
 -- }}}
 
