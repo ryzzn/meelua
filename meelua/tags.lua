@@ -63,6 +63,11 @@ screen[1]:connect_signal("tag::history::update",
                            if not mywibox[mouse.screen].visible then
                              awful.util.spawn_with_shell('twmnc -t TAG -c "<' .. name .. '>" -s 30 --id 1543 -d 1000')
                            end
-                         end)
+if screen.count == 1 then
+  tags.term = tags[1][1]
+  tags.emacs = tags[1][2]
+  tags.web = tags[1][3]
+  tags.wangwang = tags[1][4]
+end
 
 return tags
