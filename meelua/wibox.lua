@@ -215,7 +215,7 @@ end
 
 _wifi = wibox.widget.textbox()
 vicious.register(_wifi, vicious.widgets.wifi,
-                 wifi_format, 10, "wlan0")
+                 wifi_format, 10, o.netdev)
 mywifi = wibox.layout.margin(_wifi, 4)
 
 --{{---| Weather widget |-------------------------------------------------------------------------------
@@ -247,10 +247,6 @@ local function weather_format(w, args)
 
    return '<span font="Terminus 9" color="white">' .. p_city .. p_temp .. '</span>'
 end
-
-myweather = wibox.widget.textbox()
--- vicious.register(myweather, vicious.widgets.wifi, weather_format, 10, "wlan0")
-
 
 --{{---| Battery widget |-------------------------------------------------------------------------------
 
@@ -342,7 +338,7 @@ mytemp:add(tempwidget)
 
 -- /home fs widget
 fshicon = wibox.widget.imagebox()
-fshicon:set_image(theme.confdir .. "/widgets/fs.png")
+fshicon:set_image(theme.widget_fs)
 fshwidget = wibox.widget.textbox()
     vicious.register(fshwidget, vicious.widgets.fs,
     function (widget, args)
@@ -402,12 +398,20 @@ netdownicon = wibox.widget.imagebox()
 netdownicon:set_image(beautiful.widget_netdown)
 netdownicon.align = "middle"
 netdowninfo = wibox.widget.textbox()
-vicious.register(netdowninfo, vicious.widgets.net, green .. "${wlan0 down_kb}" .. coldef, 1)
+vicious.register(
+    netdowninfo,
+    vicious.widgets.net,
+    string.format("%s${%s down_kb}%s", green, o.netdev, coldef),
+    1)
 netupicon = wibox.widget.imagebox()
 netupicon:set_image(beautiful.widget_netup)
 netupicon.align = "middle"
 netupinfo = wibox.widget.textbox()
-vicious.register(netupinfo, vicious.widgets.net, red .. "${wlan0 up_kb}" .. coldef, 1)
+vicious.register(
+    netupinfo,
+    vicious.widgets.net,
+    string.format("%s${%s up_kb}%s", red, o.netdev, coldef),
+    1)
 mynet:add(netdownicon)
 mynet:add(netdowninfo)
 mynet:add(netupicon)
@@ -539,7 +543,6 @@ do
    right_layout:add(u.left_arrow(8, 16, beautiful.bg_normal, "#A0CA99"))
    if s == 1 then right_layout:add(wibox.widget.systray()) end
    right_layout:add(u.right_arrow(8, 16, beautiful.bg_normal, "#A0CA99"))
-   right_layout:add(myweather)
    right_layout:add(mycpu)
    right_layout:add(mymem)
    right_layout:add(mytemp)

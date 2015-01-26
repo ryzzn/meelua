@@ -24,6 +24,7 @@ globalkeys = {}
 terminal = "urxvtc +sb -bc -ic +tr -sh 80"
 mpc = "ncmpcpp"
 mail = "mutt"
+netdev = "wifi0"
 
 editor = os.getenv("EDITOR") or "vim"
 
