@@ -72,12 +72,12 @@ if screen.count() == 1 then
   tags.mpc = tags[1][10]
   tags.mail = tags[1][11]
 elseif screen.count() == 2 then
-  tags.term = tags[1][1]
-  tags.emacs = tags[1][2]
-  tags.web = tags[1][3]
-  tags.wangwang = tags[2][4]
-  tags.mpc = tags[2][10]
-  tags.mail = tags[2][11]
+  tags.term = tags[2][1]
+  tags.emacs = tags[2][2]
+  tags.web = tags[2][3]
+  tags.wangwang = tags[1][4]
+  tags.mpc = tags[1][10]
+  tags.mail = tags[1][11]
 end
 
 return tags
