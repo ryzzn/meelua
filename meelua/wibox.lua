@@ -45,7 +45,7 @@ musicwidget.scrolling = true -- If true, the text in the widget will be scrolled
 musicwidget.output_size = 30 -- Set the size of widget in symbols
 musicwidget.update_interval = 10 -- Set the update interval in seconds
 -- Set the folder where icons are located (change username to your login name)
-musicwidget.path_to_icons = "/home/ryan/.config/awesome/awesompd/icons"
+musicwidget.path_to_icons = "/home/ryzn/.config/awesome/awesompd/icons"
 -- Set the default music format for Jamendo streams. You can change
 -- this option on the fly in awesompd itself.
 -- possible formats: awesompd.FORMAT_MP3, awesompd.FORMAT_OGG
@@ -62,7 +62,7 @@ musicwidget.font_color = '#800080'
 musicwidget.album_cover_size = 50
 -- This option is necessary if you want the album covers to be shown
 -- for your local tracks.
-musicwidget.mpd_config = "/home/ryan/.mpdconf"
+musicwidget.mpd_config = "/home/ryzn/.mpdconf"
 -- Specify the browser you use so awesompd can open links from
 -- Jamendo in it.
 musicwidget.browser = "chromium"
@@ -238,7 +238,7 @@ local function read_json(path)
 end
 
 local function weather_format(w, args)
-   obj = read_json("/home/ryan/data/weather.json")
+   obj = read_json("/home/ryzn/data/weather.json")
    if nil == obj then return end
    weatherinfo = obj.weatherinfo
 
@@ -448,7 +448,7 @@ local _mdir_inbox = wibox.widget.textbox()
 _mdir_icon:set_markup(purple .. '✉ ' .. coldef)
 vicious.register(_mdir_tome, vicious.widgets.mdir,
                  purple .. 'Mail: $1' .. coldef,
-                 10, {"/home/ryan/Mail/Alipay/Tome"})
+                 10, {"/home/ryzn/Mail/Alipay/Tome"})
 local mymdir = wibox.layout.fixed.horizontal()
 mymdir:add(_mdir_icon)
 mymdir:add(_mdir_tome)

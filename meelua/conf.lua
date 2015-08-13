@@ -24,7 +24,7 @@ globalkeys = {}
 terminal = "urxvtc +sb -bc -ic +tr -sh 80"
 mpc = "ncmpcpp"
 mail = "mutt"
-netdev = "wifi0"
+netdev = "wlan0"
 
 editor = os.getenv("EDITOR") or "vim"
 
@@ -33,11 +33,14 @@ font = "Terminus 9"
 screenshots_dir = "~/personal/screenshots/"
 wallpaper = awful.util.getdir("config") .. "/wallpaper.png"
 theme = awful.util.getdir("config") .. "/themes/multicolor/theme.lua"
-
-awful.layout.layouts = {
+layouts = {
    -- suit.floating,
    suit.tile.bottom,
+   suit.tile.top,
    suit.tile.right,
+   suit.tile.left,
    suit.max,
    -- suit.magnifier,
 }
+
+awful.layout.layouts = layouts
