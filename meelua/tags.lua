@@ -17,10 +17,10 @@ local mytags = {
    { name = "IM", layout = suit.floating },
    { name = "6", layout = suit.floating },
    { name = "7", layout = suit.floating },
-   { name = "8", layout = suit.floating },
-   { name = "9", layout = suit.floating },
-   { name = "mpc", layout = suit.max },
-   { name = "mail", layout = suit.max },
+   { name = "DEV(T)", layout = suit.tile.left },
+   { name = "DEV", layout = suit.max },
+   { name = "MPC", layout = suit.max },
+   { name = "MAIL", layout = suit.max },
 }
 
 --- Create a set of tags and attach it to a screen.
